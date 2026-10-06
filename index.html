@@ -3,12 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="theme-color" content="#081226">
-<title>Alcartel CV Builder</title>
-<link rel="icon" type="image/png" href="data:image/png;base64,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" id="favicon">
+<title>Advision CV Builder — Crie o seu currículo e carta de apresentação</title>
+<meta name="description" content="Crie gratuitamente o seu Currículo Vitae e a Carta de Apresentação em A4, com dois modelos (Executivo e Tradicional), vários temas de cor e exportação em PDF. Por Alcartel Digital Vision.">
+<meta name="author" content="Alcartel Digital Vision">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://adivisioncvbuilder.vercel.app/">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CV Builder">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Advision CV Builder">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:title" content="Advision CV Builder — Crie o seu currículo e carta de apresentação">
+<meta property="og:description" content="Crie gratuitamente o seu Currículo Vitae e a Carta de Apresentação em A4, com dois modelos (Executivo e Tradicional), vários temas de cor e exportação em PDF. Por Alcartel Digital Vision.">
+<meta property="og:url" content="https://adivisioncvbuilder.vercel.app/">
+<meta property="og:image" content="https://adivisioncvbuilder.vercel.app/og-image.png">
+<meta property="og:image:secure_url" content="https://adivisioncvbuilder.vercel.app/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Alcartel Digital Vision CV Builder — Crie o seu Curriculum Vitae de forma simples e profissional">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advision CV Builder — Crie o seu currículo e carta de apresentação">
+<meta name="twitter:description" content="Crie gratuitamente o seu Currículo Vitae e a Carta de Apresentação em A4, com dois modelos (Executivo e Tradicional), vários temas de cor e exportação em PDF. Por Alcartel Digital Vision.">
+<meta name="twitter:image" content="https://adivisioncvbuilder.vercel.app/og-image.png">
+<meta name="twitter:image:alt" content="Alcartel Digital Vision CV Builder — Crie o seu Curriculum Vitae de forma simples e profissional">
 <style>
 :root{
   --navy-950:#081226;
@@ -1074,7 +1098,7 @@ a{color:inherit;}
         <div class="fs-role2">Fundador &amp; CEO · Alcartel Digital Vision | Karlyon Enterprise S.A.</div>
       </div>
       <div class="fs-body">
-      <div class="fs-row"><div class="fs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#0060E8" stroke-width="1.8" width="17" height="17" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="1.6"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5"/></svg></div><div><div class="fs-lbl">Plataforma</div><div class="fs-txt"><b>Adivision CV Builder</b><br><span class="fs-sub">Alcartel Digital Vision CV Builder · Construa o seu Currículo Vitae e a Carta de Apresentação, offline, com dois modelos (Executivo e Tradicional) e vários temas de cor.</span></div></div></div>
+      <div class="fs-row"><div class="fs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#0060E8" stroke-width="1.8" width="17" height="17" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="1.6"/><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5"/></svg></div><div><div class="fs-lbl">Plataforma</div><div class="fs-txt"><b>Advision CV Builder</b><br><span class="fs-sub">Alcartel Digital Vision CV Builder · Construa o seu Currículo Vitae e a Carta de Apresentação, offline, com dois modelos (Executivo e Tradicional) e vários temas de cor.</span></div></div></div>
 
         <div class="fs-row"><div class="fs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#0060E8" stroke-width="1.8" width="17" height="17"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5"/></svg></div><div><div class="fs-lbl">Formação</div><div class="fs-txt">Universidade Católica de Moçambique<br><span class="fs-sub">Faculdade de Ciências de Saúde · Beira</span></div></div></div>
         <div class="fs-row"><div class="fs-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#0A1850" stroke-width="1.8" width="17" height="17"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div><div><div class="fs-lbl">Actuação</div><div class="fs-txt">Enfermeiro · Docente/Formador<br>Programador &amp; Desenvolvedor de Websites, Aplicativos e Sistemas Digitais</div></div></div>
@@ -1365,15 +1389,15 @@ function render(){
   const topbar = document.getElementById("topbar");
   if(currentView==="home"){
     topbar.innerHTML = `
-      <div class="topbar-left"><button class="tb-btn" id="tbBrand" aria-label="Sobre a Adivision"><img src="${BRAND_ICON_URI}" alt="Adivision"></button></div>
-      <div class="tb-center"><span class="tb-brand">ADIVISION CV BUILDER</span></div>
+      <div class="topbar-left"><button class="tb-btn" id="tbBrand" aria-label="Sobre a Advision"><img src="${BRAND_ICON_URI}" alt="Advision"></button></div>
+      <div class="tb-center"><span class="tb-brand">ADVISION CV BUILDER</span></div>
       <button class="tb-btn" id="tbTips" aria-label="Menu">${ICON_HAMBURGER}</button>`;
   } else {
     topbar.innerHTML = `
       <div class="topbar-left">
         <button class="tb-btn" id="tbLeft" aria-label="Voltar">${ICON_BACK}</button>
       </div>
-      <div class="tb-center"><span class="tb-brand">ADIVISION CV BUILDER</span><span class="tb-sub">${titleMap[currentView]||""}</span></div>
+      <div class="tb-center"><span class="tb-brand">ADVISION CV BUILDER</span><span class="tb-sub">${titleMap[currentView]||""}</span></div>
       <button class="tb-btn" id="tbTips" aria-label="Menu">${ICON_HAMBURGER}</button>`;
   }
   if(document.getElementById("tbLeft")){
@@ -2329,7 +2353,7 @@ function renderAboutView(){
   const act = body.querySelector(".fs-actions"); if(act) act.remove();
   return `
   <div class="pg-title">Sobre a Plataforma</div>
-  <div class="pg-card"><p><b>Adivision CV Builder</b> (Alcartel Digital Vision CV Builder) é uma plataforma digital para construir, em poucos passos, um <b>Currículo Vitae</b> e uma <b>Carta de Apresentação</b> profissionais, em formato A4, prontos a guardar em PDF — tudo no próprio telemóvel, sem necessidade de Internet.</p>
+  <div class="pg-card"><p><b>Advision CV Builder</b> (Alcartel Digital Vision CV Builder) é uma plataforma digital para construir, em poucos passos, um <b>Currículo Vitae</b> e uma <b>Carta de Apresentação</b> profissionais, em formato A4, prontos a guardar em PDF — tudo no próprio telemóvel, sem necessidade de Internet.</p>
   <div class="pg-quote">"Ferramentas que simplificam o processo, currículos que abrem portas."</div></div>
 
   <div class="pg-h">Missão</div>
@@ -2349,14 +2373,14 @@ function renderAboutView(){
   <div class="pg-h">Apoie o Projecto</div>
   <div class="pg-card apoio">
     <div class="apoio-t">Ajude-nos a continuar a crescer</div>
-    <p>O <b>Adivision CV Builder</b> é criado e mantido com dedicação para ajudar quem procura emprego a apresentar-se melhor. Manter, melhorar e lançar novas actualizações exige tempo e recursos.</p>
+    <p>O <b>Advision CV Builder</b> é criado e mantido com dedicação para ajudar quem procura emprego a apresentar-se melhor. Manter, melhorar e lançar novas actualizações exige tempo e recursos.</p>
     <p>Se esta plataforma lhe tem sido útil, qualquer contribuição ajuda-nos a desenvolver novos modelos, novas funcionalidades e outros projectos. Cada gesto conta — obrigado por fazer parte desta caminhada.</p>
     <div class="apoio-box"><div class="apoio-lbl">Doação por e-Mola (Movitel)</div><div class="apoio-num">87 642 9153</div><button type="button" class="apoio-copy" onclick="copyEmola(this)">Copiar número</button></div>
   </div>
 
   <div class="pg-h">Desenvolvido por</div>
   <div class="pg-card">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><img src="${BRAND_ICON_URI}" alt="Adivision" style="width:46px;height:46px;border-radius:50%;"><div><div style="font-weight:800;color:var(--navy-900);font-size:13px;">ALCARTEL DIGITAL VISION</div><div style="font-size:11px;color:var(--muted);">Adivision CV Builder</div></div></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><img src="${BRAND_ICON_URI}" alt="Advision" style="width:46px;height:46px;border-radius:50%;"><div><div style="font-weight:800;color:var(--navy-900);font-size:13px;">ALCARTEL DIGITAL VISION</div><div style="font-size:11px;color:var(--muted);">Advision CV Builder</div></div></div>
     <div style="display:flex;align-items:center;gap:10px;">${KLOGO(46)}<div><div style="font-weight:800;color:var(--navy-900);font-size:13px;">KARLYON ENTERPRISE S.A.</div><div style="font-size:11px;color:var(--muted);">Solutions Applied · Beira, Moçambique</div></div></div>
   </div>
 
@@ -2368,7 +2392,7 @@ function renderAboutView(){
 function renderPrivacyView(){
   return `
   <div class="pg-title">Política de Privacidade</div>
-  <div class="pg-card"><p><b>Adivision CV Builder — Protecção de Dados Pessoais</b></p><p>A aplicação, desenvolvida pela <b>Alcartel Digital Vision</b> e pela <b>Karlyon Enterprise S.A.</b>, respeita a sua privacidade. Esta página explica que dados utilizamos e como os protegemos.</p></div>
+  <div class="pg-card"><p><b>Advision CV Builder — Protecção de Dados Pessoais</b></p><p>A aplicação, desenvolvida pela <b>Alcartel Digital Vision</b> e pela <b>Karlyon Enterprise S.A.</b>, respeita a sua privacidade. Esta página explica que dados utilizamos e como os protegemos.</p></div>
   <div class="pg-h">Dados que introduz</div>
   <div class="pg-card">Nome, profissão, contactos, fotografia, formação, experiência, habilidades, idiomas, referências e texto da carta de apresentação. Estes dados servem apenas para montar o seu currículo e a sua carta.</div>
   <div class="pg-h">Onde ficam guardados</div>
@@ -2394,14 +2418,14 @@ function renderContactsView(){
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><img src="${photo}" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #fff;box-shadow:0 1px 6px rgba(11,26,51,.25);"><div><div style="font-weight:800;color:var(--navy-900);font-size:13px;">Sacaita MONTGOMERY</div><div style="font-size:11px;color:var(--muted);">Fundador &amp; CEO · Alcartel Digital Vision | Karlyon Enterprise S.A.</div></div></div>
     <div style="height:1px;background:var(--line);margin:10px 0;"></div>
     <div style="font-weight:700;color:var(--navy-900);font-size:12px;">ALCARTEL DIGITAL VISION</div>
-    <div style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">Desenvolvedor da plataforma Adivision CV Builder</div>
+    <div style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">Desenvolvedor da plataforma Advision CV Builder</div>
     <div style="display:flex;align-items:center;gap:10px;">${KLOGO(40)}<div><div style="font-weight:700;color:var(--navy-900);font-size:12px;">KARLYON ENTERPRISE S.A.</div>
     <div style="font-size:11.5px;color:var(--muted);">Solutions Applied · Beira, Sofala, Moçambique</div></div></div>
   </div>
   <div class="pg-h">Canais de Contacto</div>
   <a class="pg-link" href="mailto:digitalcartel@gmail.com"><span class="pg-ico">${ico("mail")}</span><span><small>E-mail</small><b>digitalcartel@gmail.com</b></span></a>
   <a class="pg-link" href="tel:+258821300088"><span class="pg-ico">${ico("phone")}</span><span><small>Telefone</small><b>+258 821300088</b></span></a>
-  <a class="pg-link" href="https://wa.me/258821300088?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20o%20Adivision%20CV%20Builder" target="_blank" rel="noopener"><span class="pg-ico">${ico("phone")}</span><span><small>WhatsApp</small><b style="color:#128C7E;">+258 821300088</b></span></a>
+  <a class="pg-link" href="https://wa.me/258821300088?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20o%20Advision%20CV%20Builder" target="_blank" rel="noopener"><span class="pg-ico">${ico("phone")}</span><span><small>WhatsApp</small><b style="color:#128C7E;">+258 821300088</b></span></a>
   <div class="pg-h">Redes Sociais</div>
   <div class="pg-card" style="text-align:center;"><div style="font-weight:700;color:var(--navy-900);margin-bottom:12px;">Siga Alcartel Digital Vision</div>${socialRow()}</div>`;
 }
@@ -2424,7 +2448,7 @@ function copyEmola(btn){
 function renderCookiesView(){
   return `
   <div class="pg-title">Política de Cookies</div>
-  <div class="pg-card">Os cookies são pequenos ficheiros guardados no seu dispositivo. Esta página explica o que o <b>Adivision CV Builder</b> guarda no seu telemóvel e porquê.</div>
+  <div class="pg-card">Os cookies são pequenos ficheiros guardados no seu dispositivo. Esta página explica o que o <b>Advision CV Builder</b> guarda no seu telemóvel e porquê.</div>
   <div class="pg-h">Sem cookies de rastreio</div>
   <div class="pg-card">A aplicação <b>não usa</b> cookies de medição, de publicidade nem de perfis. Não existe Google Analytics nem anúncios personalizados.</div>
   <div class="pg-h">Armazenamento local</div>
@@ -2437,7 +2461,7 @@ function renderCookiesView(){
 function renderTermsView(){
   return `
   <div class="pg-title">Termos de Uso</div>
-  <div class="pg-card">Ao utilizar o <b>Adivision CV Builder</b>, desenvolvido pela <b>Alcartel Digital Vision</b> (Karlyon Enterprise S.A.), concorda com os termos abaixo.</div>
+  <div class="pg-card">Ao utilizar o <b>Advision CV Builder</b>, desenvolvido pela <b>Alcartel Digital Vision</b> (Karlyon Enterprise S.A.), concorda com os termos abaixo.</div>
   <div class="pg-h">Utilização</div>
   <div class="pg-card">Recebe uma licença pessoal, não exclusiva e revogável para criar currículos e cartas de apresentação. É proibido revender, alugar ou redistribuir a aplicação sem autorização.</div>
   <div class="pg-h">Responsabilidade pelo conteúdo</div>

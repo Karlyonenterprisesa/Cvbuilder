@@ -1,32 +1,19 @@
 {
- "name": "Adivision CV Builder",
+ "id": "./",
+ "name": "Advision CV Builder",
  "short_name": "CV Builder",
- "description": "Crie o seu currículo e carta de apresentação, offline.",
+ "description": "Crie o seu currículo e carta de apresentação, com funcionamento offline.",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
  "background_color": "#ffffff",
- "theme_color": "#0b1a33",
+ "theme_color": "#081226",
  "lang": "pt-MZ",
+ "categories": ["productivity", "business"],
  "icons": [
-  {
-   "src": "icon-192.png",
-   "sizes": "192x192",
-   "type": "image/png",
-   "purpose": "any"
-  },
-  {
-   "src": "icon-512.png",
-   "sizes": "512x512",
-   "type": "image/png",
-   "purpose": "any"
-  },
-  {
-   "src": "icon-512.png",
-   "sizes": "512x512",
-   "type": "image/png",
-   "purpose": "maskable"
-  }
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
  ]
 }
