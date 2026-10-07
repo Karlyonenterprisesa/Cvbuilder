@@ -163,7 +163,7 @@ body{background:#f4f6fb}
 .view-editor #editorInner{max-width:1100px}
 /* pré-visualização: controlos à esquerda, documento à direita */
 .view-preview{display:grid;grid-template-columns:clamp(320px,26vw,460px) minmax(0,1fr);gap:0 clamp(24px,3vw,56px);align-items:start}
-.view-preview .pk-wrap,.view-preview .preview-toolbar{grid-column:1}
+.view-preview .pk-wrap,.view-preview .preview-toolbar,.view-preview .pv-card{grid-column:1}
 .view-preview .cv-scale-wrap{grid-column:2;grid-row:1 / span 6;max-width:210mm;width:100%;margin:0 auto}
 .view-preview .pk-themes,.view-preview .pk-wrap.compact .pk-themes{grid-template-columns:repeat(5,1fr)}
 /* páginas de informação em colunas */
@@ -186,6 +186,7 @@ body{zoom:var(--z)}
 #toast{max-width:min(calc(92vw / var(--z)),520px)}
 }
 @media print{body{zoom:1 !important}.view-preview{display:block !important}.view-preview .cv-scale-wrap{max-width:none}}
+.pv-card{max-width:none}.pv-models{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.pv-m{position:relative;min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--navy-900);font:inherit;font-weight:800;font-size:15px;padding:6px 30px 6px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;cursor:pointer}.pv-m small{font-weight:600;font-size:11.5px;color:var(--muted)}.pv-m.active{background:var(--blue-100);border-color:var(--blue-600)}.pv-m .pv-chk{display:none;position:absolute;top:50%;right:9px;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--blue-600);color:#fff;font-size:12px;font-style:normal;align-items:center;justify-content:center}.pv-m.active .pv-chk{display:flex}@media print{.pv-card{display:none !important}}
 </style>
 <style id="logo-css">
 .cv-page .en.has-logo{display:flex;gap:3mm;align-items:flex-start}
@@ -1046,13 +1047,20 @@ function bindReferences(){
 }
 
 /* ---------------- PREVIEW VIEW ---------------- */
+function pvCard(){
+  const L=previewMode==="letter", cur=curVer(), pre=L?"Carta":"CV";
+  return `<div class="act-group cv pv-card" id="pvCard">
+    <div class="act-head"><span class="ah-ico">${ico("user")}</span><span class="ah-ico">${ico("mail")}</span><span><b>Currículo Vitae e Carta de Apresentação</b><small>Escolha o documento, o modelo e a cor</small></span></div>
+    <div class="home-seg" role="group" aria-label="Documento">
+      <button type="button" aria-pressed="${!L}" class="${!L?'on':''}" data-pvdoc="cv">Currículo</button>
+      <button type="button" aria-pressed="${L}" class="${L?'on':''}" data-pvdoc="letter">Carta de Apresentação</button>
+    </div>
+    <div class="pv-models" role="group" aria-label="Modelo">${VERSIONS.map(v=>`<button type="button" class="pv-m${v.id===cur?' active':''}" data-ver="${v.id}" aria-pressed="${v.id===cur}"><span>${pre}·${v.id}</span><small>${v.nome}</small><i class="pv-chk">✓</i></button>`).join("")}</div>
+  </div>`;
+}
 function renderPreviewView(){
   return `
-  ${versionPicker(true)}<div class="preview-toolbar">
-    <div class="doc-toggle">
-      <button class="doc-toggle-btn ${previewMode==='cv'?'active':''}" data-mode="cv">Currículo</button>
-      <button class="doc-toggle-btn ${previewMode==='letter'?'active':''}" data-mode="letter">Carta de Apresentação</button>
-    </div>
+  ${pvCard()}${versionPicker(true)}<div class="preview-toolbar">
     <span class="page-badge" id="pageBadge">1 / 2 páginas</span>
     <button class="btn btn-sm" id="btnRefresh">Actualizar</button>
   </div>
@@ -1062,13 +1070,6 @@ function renderPreviewView(){
 
 function bindPreviewEvents(){
   document.getElementById("btnRefresh").addEventListener("click", buildActiveDoc);
-  document.querySelectorAll(".doc-toggle-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      previewMode = btn.dataset.mode;
-      document.querySelectorAll(".doc-toggle-btn").forEach(b=>b.classList.toggle("active", b===btn));
-      buildActiveDoc();
-    });
-  });
   buildActiveDoc();
 }
 
@@ -1311,12 +1312,14 @@ function versionPicker(compact){
     : `<span class="pk-mini pk-b" style="--tp:${T[3]};--ta:${T[4]}"><i class="t"></i><i class="m"><em></em><em class="a"></em><u></u><u></u></i></span>`;
   const row=(lbl,pre)=>`<div class="pk-h">${lbl}</div><div class="pk-vers">${VERSIONS.map(v=>`<button class="pk-ver${v.id===cur?' active':''}" data-ver="${v.id}"><b>${pre}·${v.id}</b><span>${v.nome}</span><span class="pk-chk">✓</span></button>`).join("")}</div>`;
   return `<div class="pk-wrap${compact?' compact':''}" data-compact="${compact?1:0}">
-    ${row("Currículo","CV")}${row("Carta de apresentação","Carta")}
+    ${compact?"":row("Currículo","CV")+row("Carta de apresentação","Carta")}
     <div class="pk-h">Cores</div>
     <div class="pk-themes five">${TEMAS.map(t=>`<button class="pk-th${t[0]===cor?' active':''}" data-cor="${t[0]}" title="${t[1]}" aria-label="${t[1]}"><span class="pk-dots">${t[2].map(c=>`<i style="background:${c}"></i>`).join("")}</span><span class="pk-tn">${t[1]}</span><span class="pk-chk">✓</span></button>`).join("")}</div>
   </div>`;
 }
 document.addEventListener("click",ev=>{
+  const d=ev.target.closest&&ev.target.closest("[data-pvdoc]");
+  if(d&&currentView==="preview"){ previewMode=d.dataset.pvdoc; const pc=document.getElementById("pvCard"); if(pc) pc.outerHTML=pvCard(); buildActiveDoc(); return; }
   const b=ev.target.closest&&ev.target.closest("[data-ver],[data-cor]"); if(!b) return;
   state.ui=Object.assign({},state.ui||{});
   if(b.dataset.ver) state.ui.version=b.dataset.ver;
@@ -1324,6 +1327,7 @@ document.addEventListener("click",ev=>{
   saveState();
   if(currentView==="preview"){
     document.querySelectorAll(".pk-wrap").forEach(w=>{ w.outerHTML=versionPicker(w.dataset.compact==="1"); });
+    const pc=document.getElementById("pvCard"); if(pc) pc.outerHTML=pvCard();
     buildActiveDoc();
   } else render();
 });

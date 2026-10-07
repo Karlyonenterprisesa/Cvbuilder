@@ -1,4 +1,4 @@
-const CACHE="cv-builder-v18";
+const CACHE="cv-builder-v19";
 const PRE=["./","index.html","manifest.json","icon-192.png","icon-512.png","icon-80.png","img/banner-cv-builder.webp","img/fundador.webp","apple-touch-icon.png","favicon-32.png","site.css","site.js","pwa.js","dicas-de-carreira","sobre","vagas","contactos","privacidade","termos","cookies","carta-de-apresentacao","erros-no-curriculo","preparar-entrevista"];
 self.addEventListener("install",e=>{ self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{}))))); });
 self.addEventListener("activate",e=>{ e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())); });
