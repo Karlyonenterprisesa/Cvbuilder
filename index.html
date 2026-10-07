@@ -187,6 +187,26 @@ body{zoom:var(--z)}
 }
 @media print{body{zoom:1 !important}.view-preview{display:block !important}.view-preview .cv-scale-wrap{max-width:none}}
 </style>
+<style id="logo-css">
+.cv-page .en.has-logo{display:flex;gap:3mm;align-items:flex-start}
+.cv-page .en-main{flex:1 1 auto;min-width:0}
+.cv-page .en-logo{width:11mm;height:11mm;flex:0 0 11mm;object-fit:contain;object-position:center;background:#fff;border:.25mm solid #d5dbe6;border-radius:1.2mm;padding:.6mm;box-sizing:border-box;display:block;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.logo-preview{background-color:#fff;background-size:contain;background-position:center;background-repeat:no-repeat;border-style:solid}
+.logo-preview:empty,.logo-preview.empty{border-style:dashed}
+.upl-note{font-size:11px;line-height:1.4;color:var(--muted);margin:6px 0 0}
+.upl-note b{color:var(--navy-800)}
+.upl-btns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.logo-prev-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.logo-prev-row .lbl{font-size:10.5px;color:var(--muted)}
+.logo-mini{width:28px;height:28px;border:1px solid var(--line);border-radius:5px;background:#fff center/contain no-repeat}
+</style>
+<style id="logo-css2">
+.cv-page .en-logo{border:0 !important;border-radius:50% !important;padding:0 !important;object-fit:cover !important;background:#eef1f6 !important}
+.logo-preview,.entry-card .thumb{border:0 !important;border-radius:50% !important;background-color:#eef1f6;background-size:cover !important;background-position:center !important}
+.cv-page .en-d{padding-left:9mm !important;margin-left:0;text-align:justify !important;list-style:disc}
+.cv-page .en-d li{text-align:justify !important;text-justify:inter-word;padding-left:.5mm}
+.cv-page .en-d li::marker{color:var(--a)}
+</style>
 </head>
 <body>
 
@@ -454,6 +474,26 @@ function installApp(){
 }
 function requestPersist(){ if(navigator.storage&&navigator.storage.persist){ return navigator.storage.persist().catch(()=>false); } return Promise.resolve(false); }
 
+function fileToLogo(file, cb){
+  const reader = new FileReader();
+  reader.onerror = () => toast("Não foi possível ler o ficheiro.");
+  reader.onload = () => {
+    const img = new Image();
+    img.onerror = () => toast("Imagem não suportada. Use PNG, JPG ou WebP.");
+    img.onload = () => {
+      const MAX = 320, k = Math.min(1, MAX/Math.max(img.width,img.height));
+      const w = Math.max(1,Math.round(img.width*k)), h = Math.max(1,Math.round(img.height*k));
+      const c = document.createElement("canvas"); c.width=w; c.height=h;
+      const x = c.getContext("2d"); x.drawImage(img,0,0,w,h);
+      let out;
+      try{ out = c.toDataURL("image/png"); if(out.length>350000) out = null; }catch(_){ out=null; }
+      if(!out){ x.globalCompositeOperation="destination-over"; x.fillStyle="#fff"; x.fillRect(0,0,w,h); out = c.toDataURL("image/jpeg",0.88); }
+      cb(out);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
 function fileToBase64(file, cb){
   const reader = new FileReader();
   reader.onerror = () => toast("Não foi possível ler o ficheiro.");
@@ -743,12 +783,16 @@ function renderListEditor(section, singular, fields, addLabel){
   const editing = isOpen ? items.find(i=>i.id===openForm.id) : null;
   html += `<div class="entry-form ${isOpen?'open':''}">`;
   if(isOpen){
-    html += `<div class="photo-row">
-      <div class="logo-preview" id="logoPreview_${section}" style="${editing&&editing.logo?`background-image:url('${editing.logo}')`:''}">${editing&&editing.logo?'':'Logo'}</div>
-      <div>
-        <label class="btn btn-sm file-label" for="logoInput_${section}">Carregar Logótipo</label>
+    const hasLogo = !!(editing&&editing.logo);
+    html += `<div class="field"><label>Logótipo da instituição / empresa (opcional)</label>
+    <div class="photo-row" style="margin-bottom:0">
+      <div class="logo-preview${hasLogo?'':' empty'}" id="logoPreview_${section}" style="${hasLogo?`background-image:url('${editing.logo}')`:''}">${hasLogo?'':'Logo'}</div>
+      <div class="upl-btns">
+        <label class="btn btn-sm file-label" for="logoInput_${section}">${hasLogo?'Trocar logótipo':'Carregar logótipo'}</label>
         <input type="file" id="logoInput_${section}" accept="image/*" style="display:none;">
+        <button type="button" class="btn btn-sm btn-ghost" id="logoRemove_${section}" style="${hasLogo?'':'display:none'}">Remover</button>
       </div>
+    </div>
     </div>`;
     let rowBuffer = [];
     fields.forEach((f,idx)=>{
@@ -924,12 +968,20 @@ function bindListSection(section){
     btn.addEventListener("click", ()=>{ openForm=null; refreshEditorInner(); });
   });
   const logoInput = document.getElementById(`logoInput_${section}`);
+  const logoRm = document.getElementById(`logoRemove_${section}`);
   if(logoInput) logoInput.addEventListener("change", e=>{
     const file = e.target.files[0]; if(!file) return;
-    fileToBase64(file, b64=>{
+    fileToLogo(file, b64=>{
       const prev = document.getElementById(`logoPreview_${section}`);
-      prev.style.backgroundImage = `url('${b64}')`; prev.textContent=""; prev.dataset.logo=b64;
+      prev.style.backgroundImage = `url('${b64}')`; prev.textContent=""; prev.classList.remove("empty");
+      prev.dataset.logo=b64; delete prev.dataset.rm;
+      if(logoRm) logoRm.style.display="";
     });
+  });
+  if(logoRm) logoRm.addEventListener("click", ()=>{
+    const prev = document.getElementById(`logoPreview_${section}`);
+    prev.style.backgroundImage=""; prev.textContent="Logo"; prev.classList.add("empty");
+    prev.dataset.logo=""; prev.dataset.rm="1"; logoRm.style.display="none";
   });
   document.querySelectorAll(`[data-saveform="${section}"]`).forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -938,7 +990,8 @@ function bindListSection(section){
       const entry = id ? state[section].find(i=>i.id===id) : {id:uid()};
       fields.forEach(f=>{ const el=document.getElementById(`ff_${section}_${f.key}`); entry[f.key]=el?el.value:""; });
       const logoPrev = document.getElementById(`logoPreview_${section}`);
-      if(logoPrev && logoPrev.dataset.logo) entry.logo = logoPrev.dataset.logo;
+      if(logoPrev && logoPrev.dataset.rm) entry.logo = "";
+      else if(logoPrev && logoPrev.dataset.logo) entry.logo = logoPrev.dataset.logo;
       else if(!entry.logo) entry.logo="";
       if(!id) state[section].push(entry);
       openForm=null; saveState(); refreshEditorInner();
@@ -1277,15 +1330,15 @@ document.addEventListener("click",ev=>{
 function cvBlocks(){
   const sub=e=>(e.instituicao||"")+(e.local?(", "+e.local):"");
   return [
-    ["Formação Académica",state.education,e=>({title:e.curso,period:esc(e.ano),sub:sub(e),desc:e.descricao})],
-    ["Certificações",state.certifications,e=>({title:e.nome,period:esc(e.ano),sub:sub(e),desc:e.descricao})],
-    ["Experiência Profissional",state.experience,e=>({title:e.cargo,period:formatPeriod(e.anoInicio,e.anoFim),sub:sub(e)+(e.tipoContrato?" · "+e.tipoContrato:""),desc:e.descricao})]
+    ["Formação Académica",state.education,e=>({title:e.curso,period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
+    ["Certificações",state.certifications,e=>({title:e.nome,period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
+    ["Experiência Profissional",state.experience,e=>({title:e.cargo,period:formatPeriod(e.anoInicio,e.anoFim),sub:sub(e)+(e.tipoContrato?" · "+e.tipoContrato:""),desc:e.descricao,logo:e.logo})]
   ];
 }
 function ulHtml(d,cls){
   if(!d) return "";
   const l=d.split(/\n/).map(t=>t.trim()).filter(Boolean);
-  return l.length?`<ul class="${cls}">${l.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
+  return l.length?`<ul class="${cls}">${l.slice(0,4).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
 }
 const PERSONAL_FIELDS=[["pin","Localização","localizacao"],["phone","Telefone","telefone"],["mail","E-mail","email"],["link","LinkedIn / Website","linkedin"],["cake","Data de Nascimento","dataNascimento"],["globe","Nacionalidade","nacionalidade"]];
 function personalItems(){
@@ -1336,7 +1389,9 @@ function buildDoc(letter){
   const strip=cls=>`<div class="${cls}${none?' ph-sec':''}">${cl.map(x=>`<span class="ct${none?' ph':''}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div>`;
   const sec=(t,b)=>`<div class="sec${b?'':' ph-sec'}"><div class="sec-h">${t}</div>${b||`<p class="ph">${PH_TXT[t]||''}</p>`}</div>`;
   const entries=(items,fn)=>items.map(raw=>{const e=fn(raw);const sb=(e.sub||"").trim().replace(/,\s*$/,"");
-    return `<div class="en"><div class="en-row"><span class="en-t">${esc(e.title||"")}</span>${e.period?`<span class="en-y">${e.period}</span>`:""}</div>${sb?`<div class="en-s">${esc(sb)}</div>`:""}${ulHtml(e.desc,"en-d")}</div>`;}).join("");
+    const lg=e.logo?`<img class="en-logo" src="${e.logo}" alt="Logótipo">`:"";
+    const inner=`<div class="en-row"><span class="en-t">${esc(e.title||"")}</span>${e.period?`<span class="en-y">${e.period}</span>`:""}</div>${sb?`<div class="en-s">${esc(sb)}</div>`:""}${ulHtml(e.desc,"en-d")}`;
+    return lg?`<div class="en has-logo">${lg}<div class="en-main">${inner}</div></div>`:`<div class="en">${inner}</div>`;}).join("");
   const head=`<div class="d-name">${nameH}</div><div class="d-role">${roleH}</div><div class="d-rule"></div>`;
   const refs=state.references.length?state.references.map(r=>`<div class="en"><div class="en-t">${esc(r.nome)}</div><div class="en-s">${esc([r.cargo,r.contacto].filter(Boolean).join(" | "))}</div></div>`).join(""):"";
   const main=()=>{
