@@ -1,104 +1,144 @@
 {
-  "trailingSlash": false,
-  "headers": [
+ "trailingSlash": false,
+ "headers": [
+  {
+   "source": "/(.*)",
+   "headers": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "camera=(self), microphone=(), geolocation=(), payment=()"
-        }
-      ]
+     "key": "X-Content-Type-Options",
+     "value": "nosniff"
     },
     {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
+     "key": "X-Frame-Options",
+     "value": "SAMEORIGIN"
     },
     {
-      "source": "/(.*)\\.(png|jpg|webp|svg|ico)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=604800, stale-while-revalidate=86400"
-        }
-      ]
+     "key": "Referrer-Policy",
+     "value": "strict-origin-when-cross-origin"
     },
     {
-      "source": "/(.*)\\.(css|js)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400, stale-while-revalidate=604800"
-        }
-      ]
-    },
-    {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
-        }
-      ]
+     "key": "Permissions-Policy",
+     "value": "camera=(self), microphone=(), geolocation=(), payment=()"
     }
-  ],
-  "rewrites": [
+   ]
+  },
+  {
+   "source": "/manifest.json",
+   "headers": [
     {
-      "source": "/dicas-de-carreira",
-      "destination": "/dicas-de-carreira.html"
-    },
-    {
-      "source": "/sobre",
-      "destination": "/sobre.html"
-    },
-    {
-      "source": "/contactos",
-      "destination": "/contactos.html"
-    },
-    {
-      "source": "/privacidade",
-      "destination": "/privacidade.html"
-    },
-    {
-      "source": "/termos",
-      "destination": "/termos.html"
-    },
-    {
-      "source": "/cookies",
-      "destination": "/cookies.html"
-    },
-    {
-      "source": "/carta-de-apresentacao",
-      "destination": "/carta-de-apresentacao.html"
-    },
-    {
-      "source": "/erros-no-curriculo",
-      "destination": "/erros-no-curriculo.html"
-    },
-    {
-      "source": "/preparar-entrevista",
-      "destination": "/preparar-entrevista.html"
+     "key": "Cache-Control",
+     "value": "public, max-age=0, must-revalidate"
     }
-  ]
+   ]
+  },
+  {
+   "source": "/(.*)\\.(png|jpg|webp|svg|ico)",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=604800, stale-while-revalidate=86400"
+    }
+   ]
+  },
+  {
+   "source": "/(.*)\\.(css|js)",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=86400, stale-while-revalidate=604800"
+    }
+   ]
+  },
+  {
+   "source": "/sw.js",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=0, must-revalidate"
+    },
+    {
+     "key": "Service-Worker-Allowed",
+     "value": "/"
+    }
+   ]
+  },
+  {
+   "source": "/sitemap.xml",
+   "headers": [
+    {
+     "key": "Content-Type",
+     "value": "application/xml; charset=utf-8"
+    },
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=0, must-revalidate"
+    },
+    {
+     "key": "X-Robots-Tag",
+     "value": "all"
+    }
+   ]
+  },
+  {
+   "source": "/robots.txt",
+   "headers": [
+    {
+     "key": "Content-Type",
+     "value": "text/plain; charset=utf-8"
+    },
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=0, must-revalidate"
+    }
+   ]
+  },
+  {
+   "source": "/img/(.*)",
+   "headers": [
+    {
+     "key": "Cache-Control",
+     "value": "public, max-age=2592000, stale-while-revalidate=86400"
+    }
+   ]
+  }
+ ],
+ "rewrites": [
+  {
+   "source": "/dicas-de-carreira",
+   "destination": "/dicas-de-carreira.html"
+  },
+  {
+   "source": "/sobre",
+   "destination": "/sobre.html"
+  },
+  {
+   "source": "/contactos",
+   "destination": "/contactos.html"
+  },
+  {
+   "source": "/privacidade",
+   "destination": "/privacidade.html"
+  },
+  {
+   "source": "/termos",
+   "destination": "/termos.html"
+  },
+  {
+   "source": "/cookies",
+   "destination": "/cookies.html"
+  },
+  {
+   "source": "/carta-de-apresentacao",
+   "destination": "/carta-de-apresentacao.html"
+  },
+  {
+   "source": "/erros-no-curriculo",
+   "destination": "/erros-no-curriculo.html"
+  },
+  {
+   "source": "/preparar-entrevista",
+   "destination": "/preparar-entrevista.html"
+  }
+ ],
+ "cleanUrls": true
 }
