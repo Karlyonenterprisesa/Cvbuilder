@@ -23,19 +23,6 @@
       ]
     },
     {
-      "source": "/sw.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "Service-Worker-Allowed",
-          "value": "/"
-        }
-      ]
-    },
-    {
       "source": "/manifest.json",
       "headers": [
         {
@@ -45,11 +32,33 @@
       ]
     },
     {
-      "source": "/(.*)\\.(png|css)",
+      "source": "/(.*)\\.(png|jpg|webp|svg|ico)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(css|js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
         }
       ]
     }
@@ -78,6 +87,18 @@
     {
       "source": "/cookies",
       "destination": "/cookies.html"
+    },
+    {
+      "source": "/carta-de-apresentacao",
+      "destination": "/carta-de-apresentacao.html"
+    },
+    {
+      "source": "/erros-no-curriculo",
+      "destination": "/erros-no-curriculo.html"
+    },
+    {
+      "source": "/preparar-entrevista",
+      "destination": "/preparar-entrevista.html"
     }
   ]
 }
