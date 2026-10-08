@@ -46,9 +46,10 @@
     document.documentElement.lang = l === "en" ? "en" : "pt-MZ";
     walk(document.body); sw();
     document.querySelectorAll(".lang-sw").forEach(lab);
+    try { document.dispatchEvent(new Event("cvx:lang")); } catch (e) {}
     if (typeof window.render === "function" && document.getElementById("appContent")) { try { window.render(); } catch (e) {} }
   }
-  function lab(d) { var o = lang === "en" ? "pt" : "en"; d.innerHTML = '<button type="button" data-l="' + o + '" aria-label="' + (o === "en" ? "Switch to English" : "Mudar para Português") + '" title="' + (o === "en" ? "English" : "Português") + '">' + o.toUpperCase() + "</button>"; }
+  function lab(d) { var pt = lang !== "en"; d.setAttribute("aria-label", pt ? "Idioma" : "Language"); d.innerHTML = '<button type="button" data-l="pt" class="' + (pt ? "on" : "") + '" aria-pressed="' + pt + '" title="Português">PT</button><button type="button" data-l="en" class="' + (pt ? "" : "on") + '" aria-pressed="' + !pt + '" title="English">EN</button>'; }
   function sw() {
     if (document.querySelector(".lang-sw")) return;
     var d = document.createElement("div"); d.className = "lang-sw"; d.setAttribute("role", "group"); lab(d);

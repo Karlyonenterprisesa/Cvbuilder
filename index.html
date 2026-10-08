@@ -212,9 +212,9 @@ body{zoom:var(--z)}
 <style id="v20-css">
 .dob-row{display:grid;grid-template-columns:.8fr 1.3fr 1fr;gap:8px}
 .dob-row select,.dob-row input{width:100%;min-width:0}
-.proj-bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-.proj-bar button{flex:1 1 30%;min-width:0;padding:11px 8px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 13.5px/1.2 inherit;cursor:pointer}
-.proj-bar .proj-main{flex:1 1 100%;background:var(--blue-600);border-color:var(--blue-600);color:#fff;font-size:15px}
+.proj-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.proj-bar button{min-width:0;padding:11px 8px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);font:600 13.5px/1.2 inherit;cursor:pointer}
+.proj-bar .proj-main{background:var(--blue-600);border-color:var(--blue-600);color:#fff;font-size:13.5px}
 .mic-btn{margin-top:6px}.mic-btn.rec{background:#e11d2e;color:#fff;border-color:#e11d2e}
 </style>
 <style id="v22-css">
@@ -666,7 +666,7 @@ function homeActions(){
   </div>`;
 }
 function projBar(){
-  return `<div class="proj-bar"><button class="proj-main" data-proj="save">Guardar projecto</button><button data-proj="open">Abrir projecto</button><button data-proj="link">Copiar link para continuar</button><input type="file" id="projFile" accept=".json,application/json" style="display:none"></div>`;
+  return `<div class="proj-bar"><button class="proj-main" data-proj="save">Guardar projecto</button><button data-proj="open">Abrir projecto</button><input type="file" id="projFile" accept=".json,application/json" style="display:none"></div>`;
 }
 function bindHomeEvents(){
   document.querySelectorAll("[data-proj]").forEach(b=>b.addEventListener("click",()=>{
@@ -1897,15 +1897,15 @@ function renderContactsView(){
   <div class="pg-card">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><img src="${photo}" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid #fff;box-shadow:0 1px 6px rgba(11,26,51,.25);"><div><div style="font-weight:800;color:var(--navy-900);font-size:13px;">Sacaita MONTGOMERY</div><div style="font-size:11px;color:var(--muted);">Fundador &amp; CEO · Alcartel Digital Vision | Karlyon Enterprise S.A.</div></div></div>
     <div style="height:1px;background:var(--line);margin:10px 0;"></div>
-    <div style="font-weight:700;color:var(--navy-900);font-size:12px;">ALCARTEL DIGITAL VISION</div>
-    <div style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">Desenvolvedor da plataforma Advision CV Builder</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><img src="${BRAND_ICON_URI}" alt="Alcartel Digital Vision" style="width:40px;height:40px;border-radius:50%;flex:0 0 auto;"><div><div style="font-weight:700;color:var(--navy-900);font-size:12px;">ALCARTEL DIGITAL VISION</div>
+    <div style="font-size:11.5px;color:var(--muted);">Desenvolvedor da plataforma Advision CV Builder</div></div></div>
     <div style="display:flex;align-items:center;gap:10px;">${KLOGO(40)}<div><div style="font-weight:700;color:var(--navy-900);font-size:12px;">KARLYON ENTERPRISE S.A.</div>
     <div style="font-size:11.5px;color:var(--muted);">Solutions Applied · Beira, Sofala, Moçambique</div></div></div>
   </div>
   <div class="pg-h">Canais de Contacto</div>
   <a class="pg-link" href="mailto:digitalcartel@gmail.com"><span class="pg-ico">${ico("mail")}</span><span><small>E-mail</small><b>digitalcartel@gmail.com</b></span></a>
   <a class="pg-link" href="tel:+258821300088"><span class="pg-ico">${ico("phone")}</span><span><small>Telefone</small><b>+258 821300088</b></span></a>
-  <a class="pg-link" href="https://wa.me/258821300088?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20o%20Advision%20CV%20Builder" target="_blank" rel="noopener"><span class="pg-ico">${ico("phone")}</span><span><small>WhatsApp</small><b style="color:#128C7E;">+258 821300088</b></span></a>
+  <a class="pg-link" href="https://wa.me/258821300088?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20o%20Advision%20CV%20Builder" target="_blank" rel="noopener"><span class="pg-ico" style="color:#25D366">${ico("phone")}</span><span><small>WhatsApp</small><b style="color:#128C7E;">+258 821300088</b></span></a>
   <a class="pg-link" href="https://sacaitami.vercel.app/" target="_blank" rel="noopener noreferrer"><span class="pg-ico">${ico("globe")}</span><span><small>Website do fundador</small><b>sacaitami.vercel.app</b></span></a>
   <div class="pg-h">Redes Sociais</div>
   <div class="pg-card" style="text-align:center;"><div style="font-weight:700;color:var(--navy-900);margin-bottom:12px;">Siga Alcartel Digital Vision</div>${socialRow()}</div>`;
