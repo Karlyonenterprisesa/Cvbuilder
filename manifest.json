@@ -41,6 +41,16 @@
  "prefer_related_applications": false,
  "shortcuts": [
   {
+   "name": "Continuar o meu CV",
+   "url": "./?continuar=1",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
    "name": "Criar currículo",
    "url": "./",
    "icons": [

@@ -1,0 +1,7 @@
+ADVISION CV BUILDER v23 — VAGAS COM DECAP CMS
+1) No GitHub: Settings > Developer settings > OAuth Apps > New OAuth App.
+   Homepage URL: https://adivisioncvbuilder.vercel.app
+   Authorization callback URL: https://adivisioncvbuilder.vercel.app/api/callback
+2) Na Vercel > Project > Settings > Environment Variables: GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET (do passo 1). Faça Redeploy.
+3) Abra https://adivisioncvbuilder.vercel.app/admin, entre com GitHub (a conta ligada a karlyonenterprise@gmail.com deve ter acesso de escrita ao repositório Karlyonenterprisesa/Cvbuilder; se o ramo não for "main", altere "branch" em admin/config.yml).
+4) Cada vaga publicada grava um ficheiro em content/vagas/. A Vercel volta a correr "node build.js", que actualiza a faixa, a página /vagas, as páginas /vaga/<nome> e o sitemap.
