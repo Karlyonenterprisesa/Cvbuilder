@@ -2,7 +2,7 @@
 backend:
   name: github
   repo: Karlyonenterprisesa/Cvbuilder
-  branch: main
+  branch: branch
   base_url: https://adivisioncvbuilder.vercel.app
   auth_endpoint: api/auth
 site_url: https://adivisioncvbuilder.vercel.app
