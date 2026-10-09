@@ -1,0 +1,36 @@
+# Decap CMS — Advision CV Builder (administrador: karlyonenterprise@gmail.com)
+backend:
+  name: github
+  repo: Karlyonenterprisesa/Cvbuilder
+  branch: main
+  base_url: https://adivisioncvbuilder.vercel.app
+  auth_endpoint: api/auth
+site_url: https://adivisioncvbuilder.vercel.app
+display_url: https://adivisioncvbuilder.vercel.app/vagas
+locale: pt
+media_folder: img/vagas
+public_folder: /img/vagas
+collections:
+  - name: vagas
+    label: Vagas de emprego
+    label_singular: Vaga
+    folder: content/vagas
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    summary: "{{titulo}} — {{empresa}}"
+    fields:
+      - { label: Título da vaga, name: titulo, widget: string }
+      - { label: Empresa / Entidade, name: empresa, widget: string }
+      - { label: Local (cidade / província), name: local, widget: string, hint: "Ex.: Beira (Sofala)" }
+      - { label: Localização exacta (endereço, bairro, referência), name: endereco, widget: string, required: false }
+      - { label: Tipo de contrato, name: contrato, widget: select, default: Tempo inteiro, options: [Tempo inteiro, Tempo parcial, Contrato a prazo certo, Tempo indeterminado, Estágio, Voluntariado, Prestação de serviços, Bolsa] }
+      - { label: Modalidade de trabalho, name: modalidade, widget: select, default: Presencial, required: false, options: [Presencial, Remoto, Híbrido] }
+      - { label: Link / Fonte do anúncio, name: fonte, widget: string, required: false, hint: "Cole o endereço (https://...) do anúncio original" }
+      - { label: Prazo de candidatura, name: prazo, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: Imagem / logótipo (pequena), name: imagem, widget: image, required: false }
+      - { label: Descrição, name: descricao, widget: text, hint: "Uma linha por parágrafo; use '- ' para listas. O resumo da lista e do Google é gerado automaticamente." }
+      - { label: Como candidatar-se, name: como_candidatar, widget: text, required: false }
+      - { label: Link de candidatura, name: link_candidatura, widget: string, required: false }
+      - { label: Publicado em, name: publicado, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }

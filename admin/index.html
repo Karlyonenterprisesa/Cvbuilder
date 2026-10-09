@@ -1,14 +1,103 @@
-<!doctype html>
-<html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
-<title>Gestão de Vagas — Advision CV Builder</title>
-<!-- Caminho absoluto: /admin (sem barra final) resolvia config.yml para /config.yml (404) -->
-<link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Alcartel — Painel de Gestão de Conteúdo</title>
+
+  <!-- Indica ao Decap CMS onde está o ficheiro de configuração -->
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
 </head>
-<body><!-- Administrador: karlyonenterprise@gmail.com -->
-<script>window.CMS_MANUAL_INIT = true;</script>
-<script src="https://unpkg.com/decap-cms@3.8.4/dist/decap-cms.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js';s.onload=function(){window.CMS&&CMS.init({config:{backend:{base_url:location.origin}}})};document.body.appendChild(s)"></script>
-<script>
-/* base_url = domínio onde o admin está aberto, assim funciona em qualquer domínio da Vercel */
-if (window.CMS) CMS.init({ config: { backend: { base_url: location.origin } } });
-</script>
-</body></html>
+
+<body>
+  <!-- Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script>
+
+  <!-- ══════════════════════════════════════════════════════════
+       WIDGET CUSTOMIZADO: "candidatura"
+       Campo único que guarda { email, link } e impede a
+       publicação da vaga se os dois estiverem vazios.
+       Tem de ficar DEPOIS do script do decap-cms.js acima
+       (para que CMS/createClass/h já existam) e ANTES do Decap
+       terminar de carregar a config.yml automaticamente.
+       ══════════════════════════════════════════════════════════ -->
+  <script>
+    var CandidaturaControl = createClass({
+      getValue: function (key) {
+        var v = this.props.value;
+        if (!v) return "";
+        if (typeof v.get === "function") return v.get(key) || "";
+        return v[key] || "";
+      },
+      handleChange: function (key, e) {
+        var newVal = e.target.value;
+        var current = this.props.value;
+        var updated;
+        if (current && typeof current.set === "function") {
+          updated = current.set(key, newVal);
+        } else {
+          updated = Object.assign({}, current || {});
+          updated[key] = newVal;
+        }
+        this.props.onChange(updated);
+      },
+      render: function () {
+        return h(
+          "div",
+          { style: { display: "flex", flexDirection: "column", gap: "8px" } },
+          h("label", { style: { fontSize: "12px", fontWeight: "600" } }, "E-mail para Candidatura"),
+          h("input", {
+            type: "text",
+            value: this.getValue("email"),
+            placeholder: "exemplo@empresa.co.mz",
+            style: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" },
+            onChange: this.handleChange.bind(this, "email"),
+          }),
+          h("label", { style: { fontSize: "12px", fontWeight: "600", marginTop: "8px" } }, "Link para Candidatura"),
+          h("input", {
+            type: "text",
+            value: this.getValue("link"),
+            placeholder: "https://...",
+            style: { padding: "8px", border: "1px solid #ccc", borderRadius: "4px" },
+            onChange: this.handleChange.bind(this, "link"),
+          })
+        );
+      },
+    });
+
+    var CandidaturaPreview = createClass({
+      render: function () {
+        var v = this.props.value;
+        var email = v && (typeof v.get === "function" ? v.get("email") : v.email);
+        var link = v && (typeof v.get === "function" ? v.get("link") : v.link);
+        return h(
+          "div",
+          {},
+          email ? h("p", {}, "E-mail: " + email) : null,
+          link ? h("p", {}, "Link: " + link) : null
+        );
+      },
+    });
+
+    var candidaturaSchema = {
+      validateObject: function (value, field, t) {
+        var email = value && (typeof value.get === "function" ? value.get("email") : value.email);
+        var link = value && (typeof value.get === "function" ? value.get("link") : value.link);
+        if (!email && !link) {
+          return [
+            {
+              type: "CUSTOM",
+              message: "Preenche pelo menos o E-mail ou o Link para candidatura.",
+            },
+          ];
+        }
+        return [];
+      },
+    };
+
+    CMS.registerWidget("candidatura", CandidaturaControl, CandidaturaPreview, candidaturaSchema);
+  </script>
+</body>
+</html>
