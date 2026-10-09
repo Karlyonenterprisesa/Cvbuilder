@@ -1711,8 +1711,8 @@ function cvPaginate(page){
   let atoms, firstHTML, nextHTML;
   if(isA){
     atoms=cvAtoms(tmp.querySelector(".f-main")); const side=tmp.querySelector(".f-side").outerHTML;
-    firstHTML=`<div class="pg a a1"><div class="f-body">${side}<div class="f-main"><div class="slot"></div></div></div></div>`;
-    nextHTML=`<div class="pg a n"><div class="slot"></div></div>`;
+    firstHTML=`<div class="pg a a1"><div class="f-body">${side}<div class="f-main"><div class="slot"></div></div></div><div class="s-bar"></div></div>`;
+    nextHTML=`<div class="pg a n"><div class="slot"></div><div class="s-bar"></div></div>`;
   } else {
     atoms=cvAtoms(tmp.querySelector(".s-body"));
     const top=tmp.querySelector(".s-top-w").outerHTML, hd=tmp.querySelector(".s-head").outerHTML, bar=tmp.querySelector(".s-bar").outerHTML;
@@ -1778,6 +1778,15 @@ function shareApp(){
   if(navigator.share){ navigator.share(data).catch(()=>{}); return; }
   const t=data.url; if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(()=>toast("Ligação copiada.")).catch(()=>toast(t)); } else toast(t);
 }
+/* código do currículo: ADV001, ADV002… (sequência por pessoa/dispositivo; cada CV novo recebe o seguinte) */
+function cvCode(){
+  if(!state.cvCode){
+    let n=1; try{ n=(parseInt(localStorage.getItem("adv_cv_seq"),10)||0)+1; localStorage.setItem("adv_cv_seq",String(n)); }catch(e){}
+    state.cvCode="ADV"+String(n).padStart(3,"0"); saveState();
+  }
+  return state.cvCode;
+}
+window.cvCode=cvCode;
 function savePdf(){
   const docLabel = previewMode==="letter" ? "Carta_de_Apresentacao" : "Curriculo_Vitae";
   const nome = (state.personal.nome||"Documento").trim().replace(/\s+/g,"_") || "Documento";
