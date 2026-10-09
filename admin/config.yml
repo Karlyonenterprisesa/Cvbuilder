@@ -25,12 +25,11 @@ collections:
       - { label: Empresa / Entidade, name: empresa, widget: string }
       - { label: Local (cidade / província), name: local, widget: string, hint: "Ex.: Beira (Sofala)" }
       - { label: Localização exacta (endereço, bairro, referência), name: endereco, widget: string, required: false }
-      - { label: Tipo de contrato, name: contrato, widget: select, required: false, options: [Tempo inteiro, Tempo parcial, Estágio, Contrato a prazo, Tempo indeterminado, Voluntariado] }
+      - { label: Tipo de contrato, name: contrato, widget: select, default: Tempo inteiro, required: false, options: [Tempo inteiro, Tempo parcial, Estágio, Contrato a prazo, Tempo indeterminado, Voluntariado] }
       - { label: Fonte do anúncio (Google / site), name: fonte, widget: string, required: false }
       - { label: Prazo de candidatura, name: prazo, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { label: Imagem / logótipo (pequena), name: imagem, widget: image, required: false }
-      - { label: Resumo (aparece na lista e no Google), name: resumo, widget: text }
-      - { label: Descrição completa, name: descricao, widget: text, hint: "Uma linha por parágrafo; use '- ' para listas" }
+      - { label: Descrição, name: descricao, widget: text, hint: "Uma linha por parágrafo; use '- ' para listas. O resumo da lista e do Google é gerado automaticamente." }
       - { label: Como candidatar-se, name: como_candidatar, widget: text, required: false }
       - { label: Link de candidatura, name: link_candidatura, widget: string, required: false }
       - { label: Publicado em, name: publicado, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
