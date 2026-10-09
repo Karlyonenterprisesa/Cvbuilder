@@ -12,3 +12,10 @@ Cada vaga gravada cria content/vagas/<nome>.json e a Vercel corre "node build.js
 0) Diagnostico: abra https://SEU-DOMINIO.vercel.app/api/diagnostico — mostra se as variaveis estao definidas e qual e o callback exacto.
 LOGIN COM E-MAIL: o Decap so entra por e-mail (Netlify Identity/Git Gateway) se o site estiver alojado na Netlify. Na Vercel o unico login e o do GitHub.
 Na pagina do GitHub pode entrar com o e-mail e a palavra-passe da conta (nao precisa do "username").
+
+=== v30: LOGIN POR E-MAIL (DecapBridge) ===
+O admin/config.yml agora usa DecapBridge (git-gateway + PKCE), que permite entrar com e-mail e palavra-passe.
+1) Em decapbridge.com registe este site (repositorio Karlyonenterprisesa/Cvbuilder, dominio adivisioncvbuilder.vercel.app).
+2) Copie o ID do site para auth_endpoint e auth_token_endpoint no admin/config.yml (os IDs actuais vieram do projecto Alcartel).
+3) Convide os utilizadores por e-mail na DecapBridge.
+O login antigo por GitHub OAuth esta guardado em admin/config.github-oauth.backup.yml (copie para config.yml para voltar).

@@ -146,11 +146,11 @@ footer.site a{color:var(--pm-gold-l)}
 @media(max-width:480px){.vg-tools{padding:10px;border-radius:14px}.vg-go{padding:0 14px}.vg-count{margin-left:0;width:100%}.vg-card{flex-direction:row}.title{border-radius:14px}}
 @media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
 
-/* ===== v26: marca de água Alcartel — escondida no ecrã, só aparece ao imprimir / guardar PDF no aplicativo ===== */
+/* ===== v26: marca de água Alcartel — escondida no ecrã, visível na pré-visualização do CV e ao imprimir / guardar PDF ===== */
 .wm{display:none !important}
-body.is-app:has(.view-preview) .wm{display:block !important}
+body.is-app:has(.view-preview) .wm{display:block !important;left:auto !important;right:10px;bottom:10px;width:26px;height:26px;opacity:.3}
 @media print{
-  body.is-app .wm{display:block !important;position:fixed;left:6mm;bottom:5mm;width:7mm;height:7mm;opacity:.4;z-index:9999}
+  body.is-app .wm{display:block !important;position:fixed !important;left:auto !important;right:6mm !important;bottom:5mm !important;width:11mm !important;height:11mm !important;opacity:.22 !important;z-index:9999}
   body:not(.is-app) .wm{display:none !important}
 }
 
@@ -172,3 +172,56 @@ footer.site .foot-brands{display:flex;flex-wrap:wrap;align-items:center;gap:12px
 footer.site .foot-brands img{height:34px;width:auto;border-radius:8px;background:#fff;padding:3px;margin:0}
 footer.site .foot-brands span{flex:1 1 100%;line-height:1.5;color:#c7d3ea}
 footer.site p{text-align:left !important}
+
+/* ===== v28: tudo justificado, página de vaga profissional, ícone no rodapé ===== */
+body:not(.is-app) :is(main,footer.site) :is(p,li,h1,h2,h3,h4,figcaption,summary,dd,blockquote,.vg-facts div,.vg-meta,.vg-sum,.meta,.updated){text-align:justify !important;text-align-last:left;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+body:not(.is-app) :is(.vg-btn,.cta,.vg-chip,.vg-go,.vg-pill,.vg-count,nav a,button,.skip){text-align:left !important;text-align-last:auto}
+body:not(.is-app) .vg-empty,body:not(.is-app) .vg-empty *{text-align:center !important;text-align-last:center}
+.vg-body{border:1px solid #e1dccd;border-top:4px solid var(--pm-gold);border-radius:16px;padding:20px 20px 22px;background:#fff;box-shadow:0 10px 30px rgba(10,22,48,.1)}
+.vg-head{display:flex;align-items:center;gap:14px}
+.vg-head>:first-child{flex:none;border-radius:14px}
+.vg-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:0 0 18px}
+.vg-facts>div{display:block;padding:10px 12px;border:1px solid #e4e0d4;border-left:3px solid var(--pm-gold);border-radius:10px;background:#faf8f2;font-size:.94em;line-height:1.5}
+.vg-facts svg{vertical-align:-3px;margin-right:6px}
+.vg-body h2{display:flex;align-items:center;gap:10px;margin:24px 0 10px;padding:0 0 8px;border-bottom:1px solid #e4e0d4;color:var(--pm-navy);font-size:1.12em}
+.vg-body h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:3px;background:linear-gradient(var(--pm-gold-l),var(--pm-gold))}
+.vg-body ul{padding-left:0;list-style:none}
+.vg-body li{position:relative;padding-left:20px;margin:.5em 0}
+.vg-body li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--pm-gold)}
+.vg-body p>a.vg-btn{display:block;text-align:center !important;padding:14px 20px;border-radius:12px;margin:18px 0 6px;text-decoration:none;font-size:1.02em}
+.vg-body>.vg-meta:last-child{margin-top:16px;padding:12px 14px;border:1px dashed var(--pm-gold);border-radius:10px;background:#fbf6e8;font-size:.9em;color:#5b6b85}
+footer.site{position:relative}
+footer.site .wrap{padding-right:76px}
+footer.site::after{content:"";position:absolute;right:16px;bottom:16px;width:46px;height:46px;background:url(/icon-80.png) center/contain no-repeat;border-radius:10px;opacity:.38;pointer-events:none}
+@media(max-width:420px){.vg-body{padding:16px 14px 18px}.vg-facts{grid-template-columns:1fr}}
+
+/* ===== v29: página de vaga em cards (paleta do CV: azul-marinho, azul, vermelho, cinza) ===== */
+.vg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:0 0 14px}
+.vg-c{--ac:#0b1d66;position:relative;margin:0 0 14px;padding:16px 18px;background:#fff;border:1px solid #dfe5f1;border-top:4px solid var(--ac);border-radius:14px;box-shadow:0 6px 18px rgba(11,29,102,.08);overflow:hidden;min-width:0}
+.vg-grid .vg-c{margin:0}
+.vg-c-local,.vg-c-fonte{--ac:#0047ff}.vg-c-prazo,.vg-c-cand{--ac:#e10b17}.vg-c-contrato,.vg-c-desc{--ac:#0b1d66}.vg-c-pub,.vg-c-note{--ac:#8a94a6}
+.vg-c-note{background:#eef1f6}
+.vg-c h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:0;border:0;font-size:.8em;letter-spacing:.07em;text-transform:uppercase;color:var(--ac)}
+.vg-c h2::before{display:none}
+.vg-c h2 svg{flex:none;color:var(--ac)}
+.vg-c p{margin:.5em 0}
+.vg-c>p:first-of-type{margin-top:0}
+.vg-big{font-size:1.1em;font-weight:800;color:#0a0a0a;line-height:1.3;margin:0 0 2px}
+.vg-sub{font-size:.88em;color:#5b6b85;margin:.25em 0 0}
+.vg-c-note .vg-sub{text-align:justify !important}
+.vg-c ul{padding-left:0;list-style:none;margin:.4em 0}
+.vg-c li{position:relative;padding-left:20px;margin:.5em 0}
+.vg-c li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--ac)}
+.vg-c p>a.vg-btn{display:block;text-align:center !important;padding:14px 20px;border-radius:12px;margin:16px 0 4px;text-decoration:none}
+.vg-c-cand .vg-btn{background:linear-gradient(180deg,#ff1f2d,#e10b17);color:#fff;box-shadow:0 4px 12px rgba(225,11,23,.35)}
+.vg-c-cand .vg-btn:hover{background:linear-gradient(180deg,#ff3a46,#c8202f);color:#fff}
+.vg-c-fonte a{font-weight:700;word-break:break-all}
+.vg-card{border-top:4px solid #0b1d66}
+.vg-card .vg-chip{background:#eef1f6;color:#0b1d66}
+@media(max-width:380px){.vg-grid{grid-template-columns:1fr}.vg-c{padding:14px}}
+@media(min-width:900px){.vg-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* ===== v30: cards de requisitos e palavras-chave ===== */
+.vg-c-req{--ac:#0047ff}.vg-c-tags{--ac:#8a94a6}
+.vg-c-tags p{text-align:left !important;display:flex;flex-wrap:wrap;gap:6px}
+.vg-c h3{margin:.8em 0 .3em;font-size:1em;color:var(--ac)}
