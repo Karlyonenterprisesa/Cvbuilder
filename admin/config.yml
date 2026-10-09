@@ -52,15 +52,11 @@ collections:
         required: true
         options: ["Tempo Inteiro", "Meio Período", "Estágio", "Freelance", "Temporário", "Prestação de Serviços"]
 
-      - { name: "responsabilidades", label: "Principais Responsabilidades", widget: "markdown", required: true }
+      - { name: "descricao", label: "Descrição Geral da Vaga", widget: "markdown", required: true }
 
       - { name: "requisitos", label: "Requisitos", widget: "markdown", required: true }
 
-      - name: "candidatura"
-        label: "Como Candidatar-se"
-        widget: "candidatura"
-        required: true
-        hint: "Preenche pelo menos um dos dois campos (e-mail ou link). Não é possível publicar se ambos ficarem vazios."
+      - { name: "link_candidatura", label: "Link para Candidatura", widget: "string", required: true, hint: "Ex: https://..." }
 
       - name: "data_limite"
         label: "Data Limite para Candidatura"
