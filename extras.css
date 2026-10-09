@@ -153,3 +153,22 @@ body.is-app:has(.view-preview) .wm{display:block !important}
   body.is-app .wm{display:block !important;position:fixed;left:6mm;bottom:5mm;width:7mm;height:7mm;opacity:.4;z-index:9999}
   body:not(.is-app) .wm{display:none !important}
 }
+
+/* ===== v27: sem quebras de layout, texto justificado, rodapé alinhado ===== */
+html,body{max-width:100%;overflow-x:clip}
+main,.wrap,.card,.vg-body,.vg-card>div{min-width:0}
+.card,.vg-body,.vg-meta,.title{overflow-wrap:anywhere}
+.vg-body a,.vg-meta a{overflow-wrap:anywhere;word-break:break-word}
+img,svg,video,iframe,table{max-width:100%}
+main p,main li,.card p,.card li,.vg-body p,.vg-body li{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.title p,.vg-card .vg-meta,.vg-chip,.vg-facts div,.vg-count,.vg-empty,.vg-tools p,h1,h2,h3,.updated,.vg-btn,.cta,.skip{text-align:left}
+.vg-body .vg-meta,.vg-sum{text-align:justify}
+.vg-sum{margin:.5em 0}
+.vg-facts{display:grid;gap:6px;margin:0 0 6px}
+.vg-facts div{overflow-wrap:anywhere}
+footer.site{padding:28px 0 34px}
+footer.site nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 18px;padding:0 0 16px;border-bottom:1px solid rgba(240,213,138,.25)}
+footer.site .foot-brands{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 10px;text-align:left}
+footer.site .foot-brands img{height:34px;width:auto;border-radius:8px;background:#fff;padding:3px;margin:0}
+footer.site .foot-brands span{flex:1 1 100%;line-height:1.5;color:#c7d3ea}
+footer.site p{text-align:left !important}

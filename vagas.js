@@ -13,7 +13,7 @@
   var week = new Date(today.getTime() + 7 * 864e5), isoW = week.getFullYear() + "-" + ("0" + (week.getMonth() + 1)).slice(-2) + "-" + ("0" + week.getDate()).slice(-2);
   var items = cards.map(function (c, i) {
     var a = c.querySelector("h3 a"), slug = a ? (a.getAttribute("href") || "").split("/").pop() : "";
-    return { el: c, i: i, slug: slug, txt: norm(c.textContent), title: norm(a && a.textContent), prazo: "" };
+    return { el: c, i: i, slug: slug, txt: norm(c.textContent + " " + (c.getAttribute("data-q") || "")), title: norm(a && a.textContent), prazo: "" };
   });
   var parent = cards[0].parentNode, anchor = cards[cards.length - 1].nextSibling;
 
