@@ -1,0 +1,1 @@
+{"name":"advision-cv-builder","private":true,"scripts":{"build":"node build.js"}}

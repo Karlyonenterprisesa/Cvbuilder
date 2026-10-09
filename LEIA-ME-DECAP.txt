@@ -1,0 +1,21 @@
+ADVISION CV BUILDER — DECAP CMS (admin) — checklist
+1) GitHub > Settings > Developer settings > OAuth Apps > New OAuth App
+   Homepage URL ........: https://SEU-DOMINIO.vercel.app
+   Authorization callback: https://SEU-DOMINIO.vercel.app/api/callback   (tem de ser /api/callback, igual ao domínio real)
+2) Vercel > Settings > Environment Variables: GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET > Redeploy.
+3) admin/config.yml: repo "Karlyonenterprisesa/Cvbuilder" e branch "main" (confirme o nome do ramo no GitHub).
+   A conta GitHub que entra tem de ter acesso de escrita a esse repositório.
+4) Abra https://SEU-DOMINIO.vercel.app/admin > Login with GitHub.
+5) /api/callback aberto directamente mostra apenas um aviso — é normal; só funciona dentro do login.
+Cada vaga gravada cria content/vagas/<nome>.json e a Vercel corre "node build.js" (lista, páginas /vaga/, faixa, sitemap).
+
+0) Diagnostico: abra https://SEU-DOMINIO.vercel.app/api/diagnostico — mostra se as variaveis estao definidas e qual e o callback exacto.
+LOGIN COM E-MAIL: o Decap so entra por e-mail (Netlify Identity/Git Gateway) se o site estiver alojado na Netlify. Na Vercel o unico login e o do GitHub.
+Na pagina do GitHub pode entrar com o e-mail e a palavra-passe da conta (nao precisa do "username").
+
+=== v30: LOGIN POR E-MAIL (DecapBridge) ===
+O admin/config.yml agora usa DecapBridge (git-gateway + PKCE), que permite entrar com e-mail e palavra-passe.
+1) Em decapbridge.com registe este site (repositorio Karlyonenterprisesa/Cvbuilder, dominio adivisioncvbuilder.vercel.app).
+2) Copie o ID do site para auth_endpoint e auth_token_endpoint no admin/config.yml (os IDs actuais vieram do projecto Alcartel).
+3) Convide os utilizadores por e-mail na DecapBridge.
+O login antigo por GitHub OAuth esta guardado em admin/config.github-oauth.backup.yml (copie para config.yml para voltar).

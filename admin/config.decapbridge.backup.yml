@@ -1,0 +1,126 @@
+# Advision CV Builder — Decap CMS com DecapBridge (login por e-mail, PKCE)
+# Repositório: Karlyonenterprisesa/Cvbuilder  ·  Site: https://adivisioncvbuilder.vercel.app
+# IMPORTANTE: o site da DecapBridge (IDs em auth_endpoint / auth_token_endpoint) tem de estar
+# registado para ESTE repositório. Se criar um site novo na DecapBridge, substitua os 2 IDs abaixo.
+# Cópia de segurança do login antigo (GitHub OAuth): admin/config.github-oauth.backup.yml
+
+backend:
+  name: git-gateway
+  repo: Karlyonenterprisesa/Cvbuilder
+  branch: main
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/dd9c0db1-f16e-487f-8d5a-ec2bc19e58f3/pkce
+  auth_token_endpoint: /sites/dd9c0db1-f16e-487f-8d5a-ec2bc19e58f3/token
+  gateway_url: https://gateway.decapbridge.com
+
+# Onde ficam as imagens enviadas pelo widget "image" (ex.: logótipo da
+# empresa em cada vaga). Pasta própria, separada de content/vagas/ (que é
+# só dados JSON) para manter cada pasta com um único tipo de conteúdo.
+media_folder: "assets/empresas"
+public_folder: "/assets/empresas"
+
+# Ver quem fez as alterações (rastreio de commits automático)
+commit_messages:
+  create: Create {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+  update: Update {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+  delete: Delete {{collection}} "{{slug}}" - {{author-name}} <{{author-login}}> via DecapBridge
+  uploadMedia: Upload "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+  deleteMedia: Delete "{{path}}" - {{author-name}} <{{author-login}}> via DecapBridge
+  openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
+
+# Campos de autenticação PKCE (OIDC)
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
+
+# Logo melhorado do Decap + Bridge
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+
+# URL do site
+site_url: https://adivisioncvbuilder.vercel.app
+display_url: https://adivisioncvbuilder.vercel.app/vagas
+locale: pt
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "vagas"
+    label: "Vagas de Emprego"
+    label_singular: "Vaga"
+    folder: "content/vagas"
+    create: true
+    slug: "{{fields.titulo}}-{{fields.local}}"
+    extension: "json"
+    format: "json"
+    summary: "{{fields.titulo}} — {{fields.local}}"
+    fields:
+      - { name: "titulo", label: "Título da Vaga", widget: "string", required: true }
+
+      - { name: "empresa", label: "Nome da Empresa", widget: "string", required: true }
+
+      - name: "imagem_empresa"
+        label: "Logótipo da Empresa"
+        widget: "image"
+        required: false
+        hint: "Opcional. Se não for enviada, o site usa o logótipo da Alcartel como imagem por defeito."
+
+      - { name: "local", label: "Local da Vaga", widget: "string", required: true, hint: "Ex: Beira, Sofala" }
+
+      - name: "tipo_contrato"
+        label: "Tipo de Contrato"
+        widget: "select"
+        required: true
+        options: ["Tempo Inteiro", "Meio Período", "Estágio", "Freelance", "Temporário", "Prestação de Serviços"]
+
+      - { name: "responsabilidades", label: "Principais Responsabilidades", widget: "markdown", required: true }
+
+      - { name: "requisitos", label: "Requisitos", widget: "markdown", required: true }
+
+      - name: "candidatura"
+        label: "Como Candidatar-se"
+        widget: "candidatura"
+        required: true
+        hint: "Preenche pelo menos um dos dois campos (e-mail ou link). Não é possível publicar se ambos ficarem vazios."
+
+      - name: "data_limite"
+        label: "Data Limite para Candidatura"
+        widget: "datetime"
+        required: true
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: false
+        hint: "Apenas a data (sem hora)."
+
+      - name: "categoria"
+        label: "Categoria"
+        widget: "select"
+        required: true
+        options:
+          - "Administração"
+          - "Agricultura e Agropecuária"
+          - "Atendimento ao Cliente e Vendas"
+          - "Comércio e Retalho"
+          - "Construção Civil e Engenharia"
+          - "Contabilidade e Finanças"
+          - "Educação"
+          - "Hotelaria e Turismo"
+          - "Informática"
+          - "Logística e Transportes"
+          - "Mineração e Petróleo e Gás"
+          - "Recursos Humanos"
+          - "Saúde"
+          - "Vendas e Marketing"
+          - "Outra"
+
+      - name: "palavras_chave"
+        label: "Palavras-chave (SEO)"
+        widget: "string"
+        required: false
+        hint: "Separadas por vírgula. Ex: emprego beira, técnico manutenção, vagas sofala, karlyon"
+
+      - { name: "data_publicacao", label: "Data de Publicação (automático)", widget: "hidden", default: "{{now}}" }
+      - { name: "estado_vaga", label: "Estado da Vaga (automático)", widget: "hidden", default: "Aberta" }
+      - { name: "destaque", label: "Vaga em Destaque (automático)", widget: "hidden", default: false }

@@ -1,0 +1,99 @@
+# Advision CV Builder — Decap CMS com login GitHub (OAuth via /api/auth e /api/callback na Vercel)
+# Repositório: Karlyonenterprisesa/Cvbuilder  ·  Site: https://adivisioncvbuilder.vercel.app
+# Necessita na Vercel: GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET (ver /api/diagnostico)
+# Cópia do login DecapBridge: admin/config.decapbridge.backup.yml
+
+backend:
+  name: github
+  repo: Karlyonenterprisesa/Cvbuilder
+  branch: main
+  base_url: https://adivisioncvbuilder.vercel.app
+  auth_endpoint: api/auth
+
+# Onde ficam as imagens enviadas pelo widget "image" (ex.: logótipo da
+# empresa em cada vaga). Pasta própria, separada de content/vagas/ (que é
+# só dados JSON) para manter cada pasta com um único tipo de conteúdo.
+media_folder: "assets/empresas"
+public_folder: "/assets/empresas"
+
+# URL do site
+site_url: https://adivisioncvbuilder.vercel.app
+display_url: https://adivisioncvbuilder.vercel.app/vagas
+locale: pt
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "vagas"
+    label: "Vagas de Emprego"
+    label_singular: "Vaga"
+    folder: "content/vagas"
+    create: true
+    slug: "{{fields.titulo}}-{{fields.local}}"
+    extension: "json"
+    format: "json"
+    summary: "{{fields.titulo}} — {{fields.local}}"
+    fields:
+      - { name: "titulo", label: "Título da Vaga", widget: "string", required: true }
+
+      - { name: "empresa", label: "Nome da Empresa", widget: "string", required: true }
+
+      - name: "imagem_empresa"
+        label: "Logótipo da Empresa"
+        widget: "image"
+        required: false
+        hint: "Opcional. Se não for enviada, o site usa a imagem por defeito do Advision CV Builder."
+
+      - { name: "local", label: "Local da Vaga", widget: "string", required: true, hint: "Ex: Beira, Sofala" }
+
+      - name: "tipo_contrato"
+        label: "Tipo de Contrato"
+        widget: "select"
+        required: true
+        options: ["Tempo Inteiro", "Meio Período", "Estágio", "Freelance", "Temporário", "Prestação de Serviços"]
+
+      - { name: "descricao", label: "Descrição Geral da Vaga", widget: "markdown", required: true }
+
+      - { name: "requisitos", label: "Requisitos", widget: "markdown", required: true }
+
+      - { name: "link_candidatura", label: "Link para Candidatura", widget: "string", required: true, hint: "Ex: https://..." }
+
+      - name: "data_limite"
+        label: "Data Limite para Candidatura"
+        widget: "datetime"
+        required: true
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: false
+        hint: "Apenas a data (sem hora)."
+
+      - name: "categoria"
+        label: "Categoria"
+        widget: "select"
+        required: true
+        options:
+          - "Administração"
+          - "Agricultura e Agropecuária"
+          - "Atendimento ao Cliente e Vendas"
+          - "Comércio e Retalho"
+          - "Construção Civil e Engenharia"
+          - "Contabilidade e Finanças"
+          - "Educação"
+          - "Hotelaria e Turismo"
+          - "Informática"
+          - "Logística e Transportes"
+          - "Mineração e Petróleo e Gás"
+          - "Recursos Humanos"
+          - "Saúde"
+          - "Vendas e Marketing"
+          - "Outra"
+
+      - name: "palavras_chave"
+        label: "Palavras-chave (SEO)"
+        widget: "string"
+        required: false
+        hint: "Separadas por vírgula. Ex: emprego beira, técnico manutenção, vagas sofala, karlyon"
+
+      - { name: "data_publicacao", label: "Data de Publicação (automático)", widget: "hidden", default: "{{now}}" }
+      - { name: "estado_vaga", label: "Estado da Vaga (automático)", widget: "hidden", default: "Aberta" }
+      - { name: "destaque", label: "Vaga em Destaque (automático)", widget: "hidden", default: false }

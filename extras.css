@@ -1,0 +1,316 @@
+/* Advision CV Builder — extras v30: idioma PT/EN, marca de água, faixa de vagas, marcadores do CV */
+.lang-sw{display:inline-flex;flex:0 0 auto}
+.tb-right{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.lang-sw button{width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font:800 11px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;letter-spacing:.04em;cursor:pointer}
+.lang-sw.fixed{position:fixed;top:8px;right:8px;z-index:60;background:#0b1a33;margin:0}
+header.site .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+header.site .bar .lang-sw{margin-left:auto}
+/* marca de água do site: canto inferior esquerdo, discreta */
+.wm{position:fixed;left:6px;bottom:4px;width:20px;height:20px;opacity:.28;z-index:31;pointer-events:none;user-select:none}
+.wm img{width:100%;height:100%;display:block;filter:grayscale(.4)}
+@media(min-width:461px){body.is-app .wm{left:calc(50% - 230px + 6px)}}
+/* faixa de vagas (carrossel infinito para a esquerda) */
+.vs{position:fixed;left:0;right:0;bottom:var(--vs-b,28px);z-index:29;max-width:460px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:6px 8px;background:rgba(8,18,38,.96);color:#fff;border-top:1px solid rgba(255,255,255,.15);box-shadow:0 -4px 14px rgba(0,0,0,.2)}
+body:not(.is-app) .vs{max-width:none}
+.vs-btn{flex:0 0 auto;font:800 10.5px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;letter-spacing:.08em;color:#fff;text-decoration:none;padding:8px 11px;border-radius:999px;border:1.5px solid #f5d27a;background:linear-gradient(180deg,rgba(245,210,122,.18),rgba(245,210,122,.04));box-shadow:0 0 0 2px rgba(245,210,122,.12)}
+.vs-btn:hover{background:#f5d27a;color:#081226}
+.vs-win{flex:1;overflow:hidden;min-width:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.vs-track{display:flex;gap:18px;width:max-content;animation:vsmove var(--vs-d,30s) linear infinite}
+.vs-win:hover .vs-track,.vs-win:focus-within .vs-track{animation-play-state:paused}
+@keyframes vsmove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.vs-it{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;white-space:nowrap}
+.vs-it img{width:30px;height:30px;border-radius:7px;object-fit:cover;background:#fff;flex:0 0 auto}
+.vs-it span{display:flex;flex-direction:column;line-height:1.2}
+.vs-it b{font:700 12px/1.2 -apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:190px;overflow:hidden;text-overflow:ellipsis}
+.vs-it small{font:11px/1.2 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#b9c7e2}
+@media(prefers-reduced-motion:reduce){.vs-track{animation:none}.vs-win{overflow-x:auto}}
+body.has-vs:not(.is-app){padding-bottom:70px}
+body.has-vs.is-app .app-content{padding-bottom:56px}
+/* página de vagas */
+.vg-card{display:flex;gap:12px;align-items:flex-start}
+.vg-card img{width:64px;height:64px;border-radius:10px;object-fit:cover;flex:0 0 auto;background:#eef2f9}
+.vg-card h3{margin:0 0 4px;font-size:1.05em}
+.vg-card h3 a{text-decoration:none;color:inherit}
+.vg-meta{color:#5b6b85;font-size:.92em;margin:2px 0}
+.vg-btn{display:inline-block;margin-top:8px;padding:8px 16px;border-radius:999px;border:1.5px solid #1c5ff0;color:#1c5ff0;font-weight:700;text-decoration:none}
+.vg-btn:hover{background:#1c5ff0;color:#fff}
+.vg-body p{margin:.6em 0}.vg-body ul{margin:.6em 0;padding-left:1.2em}
+/* ===== CV: marcadores profissionais e espaçamento das descrições ===== */
+.cv-page .en-d{line-height:1.45 !important;margin-top:2mm !important}
+.cv-page .en-d p{position:relative;padding-left:4.4mm;margin:0 0 2mm !important;line-height:1.45 !important}
+.cv-page .en-d p::before{content:"";position:absolute;left:.5mm;top:.58em;width:1.5mm;height:1.5mm;background:var(--a);border-radius:.25mm}
+.cv-page .en{margin-bottom:4mm}
+.cv-page .en-s{margin-top:.6mm}
+.f-sk::before,.f-lg::before{content:"";width:2.3mm;height:2.3mm;box-sizing:border-box;border-radius:50%;border:.35mm solid var(--al);background:radial-gradient(circle,var(--al) 34%,transparent 38%);margin-top:1.2mm;flex:0 0 auto}
+.mk-list .f-sk::before,.mk-list .f-lg::before{border-color:var(--a);background:radial-gradient(circle,var(--a) 34%,transparent 38%)}
+.f-sk span,.f-lg span{font-weight:400}
+.f-lg b{font-weight:700;display:inline}
+.f-row.f-sk,.f-row.f-lg{margin-bottom:2.8mm;line-height:1.3}
+.cv-page .pf-u{word-break:break-all}
+@media print{.vs,.lang-sw{display:none !important}}
+.topbar .tb-center{flex:1 1 0;min-width:0;overflow:hidden}
+.topbar .tb-brand{white-space:nowrap;font-size:clamp(11px,3.7vw,17px)}
+.tb-right .tb-btn,.lang-sw button{width:32px;height:32px}
+.tb-right{gap:5px}
+header.site .bar{position:relative}
+header.site .bar .lang-sw{position:absolute;top:12px;right:12px;margin:0}
+header.site .brand{max-width:calc(100% - 52px)}
+.vg-card,.vg-card p,.vg-card h3,.vg-body,.vg-body p,.vg-body li{text-align:left !important}
+.topbar{grid-template-columns:34px 1fr auto !important}
+.tb-right .tb-btn{width:34px;height:34px}
+
+/* ===== v24: cabeçalho sem sobreposição do botão de idioma ===== */
+header.site .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+header.site .bar .lang-sw{position:static !important;margin:0 !important;order:2}
+header.site .brand{max-width:none;margin-right:auto;order:0}
+header.site nav.main{order:3;margin-left:0;width:100%}
+@media(min-width:760px){header.site .brand{margin-right:0}header.site nav.main{order:1;width:auto;margin-left:auto}header.site .bar .lang-sw{order:2}}
+/* ===== rodapé com logótipos ===== */
+footer.site .foot-brands{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+footer.site .foot-brands img{height:26px;width:auto;border-radius:6px;background:#fff;padding:1px;object-fit:contain}
+/* ===== contactos ===== */
+.ent-row{display:flex;align-items:center;gap:12px;margin:0 0 12px}.ent-row:last-child{margin:0}
+.ent-row img{flex:0 0 auto;width:52px;height:52px;border-radius:12px;background:#fff;border:1px solid var(--line);object-fit:contain}
+.ent-row img.ph{border-radius:50%;object-fit:cover;object-position:50% 12%}
+.ent-row p{margin:0;text-align:left}
+.links a.row{position:relative;padding-left:56px}
+.links a.row .ci{position:absolute;left:16px;top:50%;transform:translateY(-50%)}
+.social-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.social-list a{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--navy);font-weight:700}
+@media(prefers-color-scheme:dark){.social-list a{background:#111c31}.ent-row img{background:#fff}}
+/* ===== vagas ===== */
+.vg-card img.vg-ico,.vg-ico{width:64px;height:64px;max-width:64px;border-radius:12px;object-fit:cover;flex:0 0 auto;background:#eef2f9;border:1px solid var(--line)}
+.vg-det{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0 10px}
+.vg-det li,.vg-det p{margin:0}
+.vg-chip{display:inline-flex;gap:6px;align-items:center;font-size:.88em;color:#5b6b85;margin:2px 10px 2px 0}
+.vg-chip svg{flex:none}
+.vg-head{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.vg-head .vg-ico{width:72px;height:72px;max-width:72px}
+.vg-facts{display:grid;grid-template-columns:1fr;gap:6px;background:#f3f6fb;border-radius:10px;padding:10px 12px;margin:8px 0 12px}
+.vg-facts div{font-size:.95em}
+@media(min-width:600px){.vg-facts{grid-template-columns:1fr 1fr}}
+@media(prefers-color-scheme:dark){.vg-facts{background:#0d1a30}.vg-ico{background:#1a2740}}
+/* index: projecto lado a lado */
+.proj-bar{display:grid !important;grid-template-columns:1fr 1fr !important;gap:8px}
+.proj-bar button{flex:none !important;width:100%}
+
+/* ===== v25: seletor de idioma PT | EN em barra ===== */
+.lang-sw{display:inline-flex;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28)}
+.lang-sw button,.tb-right .lang-sw button{width:auto !important;min-width:36px;height:28px !important;padding:0 10px;border:0 !important;border-radius:999px !important;background:transparent !important;color:#dfe9ff;font:800 11.5px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;letter-spacing:.06em;transition:background .18s,color .18s,box-shadow .18s}
+.lang-sw button.on{background:linear-gradient(180deg,#f0d58a,#c9a24a) !important;color:#0a1630;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.lang-sw button:focus-visible{outline:2px solid #f0d58a;outline-offset:2px}
+
+/* ===== v25: pesquisa nas vagas ===== */
+.vg-tools{position:sticky;top:0;z-index:20;margin:0 0 14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid var(--line,#dfe6f0);box-shadow:0 8px 24px rgba(10,22,48,.1)}
+.vg-form{display:flex;gap:8px}
+.vg-field{position:relative;flex:1;min-width:0;display:flex;align-items:center}
+.vg-field svg{position:absolute;left:13px;color:#6b7a94;pointer-events:none}
+.vg-field input{width:100%;min-height:46px;padding:0 40px 0 40px;border-radius:12px;border:1.5px solid #cfd8e6;background:#fff;color:#0a1630;font:inherit;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none}
+.vg-field input::-webkit-search-cancel-button{display:none}
+.vg-field input:focus{border-color:#c9a24a;box-shadow:0 0 0 4px rgba(201,162,74,.22)}
+.vg-x{position:absolute;right:6px;width:34px;height:34px;border:0;border-radius:50%;background:#eef2f9;color:#33415c;font-size:20px;line-height:1;cursor:pointer}
+.vg-go{min-height:46px;padding:0 20px;border:0;border-radius:12px;background:linear-gradient(180deg,#14306b,#0a1630);color:#fff;font-weight:800;font-size:14px;cursor:pointer;box-shadow:0 3px 10px rgba(10,22,48,.3)}
+.vg-go:active{transform:scale(.97)}
+.vg-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:10px}
+.vg-sel{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#5b6b85}
+.vg-sel select{min-height:36px;border-radius:999px;border:1.5px solid #cfd8e6;background:#fff;padding:0 10px;font:inherit;font-size:13px;color:#0a1630}
+.vg-pill{min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid #cfd8e6;background:#fff;color:#33415c;font-size:12.5px;font-weight:700;cursor:pointer}
+.vg-pill[aria-pressed="true"]{background:#0a1630;border-color:#0a1630;color:#f0d58a}
+.vg-count{margin-left:auto;font-size:12.5px;font-weight:700;color:#5b6b85}
+.vg-empty{margin:12px 0 0;padding:18px;border-radius:12px;background:#fbf6e8;border:1px dashed #c9a24a;text-align:center;color:#0a1630}
+.vg-empty b{display:block;font-size:16px}.vg-empty span{font-size:13px;color:#5b6b85}
+.vg-card[hidden],.vg-empty[hidden],.vg-x[hidden]{display:none !important}
+
+/* ===== v25: revisão total de cores (páginas do site) — azul-marinho, ouro e marfim ===== */
+:root{--pm-navy:#0a1630;--pm-navy2:#13285a;--pm-gold:#c9a24a;--pm-gold-l:#f0d58a;--pm-ivory:#f6f3ec;--pm-ink:#14203a}
+body:not(.is-app){background:linear-gradient(180deg,#f6f3ec,#eef2f9 320px) fixed;color:var(--pm-ink)}
+header.site{background:linear-gradient(120deg,#060e22,var(--pm-navy) 55%,var(--pm-navy2));border-bottom:2px solid var(--pm-gold);box-shadow:0 6px 22px rgba(6,14,34,.35)}
+header.site .brand span{color:#fff;letter-spacing:.02em}
+nav.main a{color:#dfe9ff;border-radius:999px;transition:background .15s,color .15s}
+nav.main a:hover{background:rgba(255,255,255,.12);color:#fff}
+nav.main a[aria-current],nav.main a[aria-current="page"]{background:linear-gradient(180deg,var(--pm-gold-l),var(--pm-gold));color:var(--pm-navy);font-weight:800}
+.title{background:linear-gradient(135deg,var(--pm-navy),var(--pm-navy2));color:#fff;border-radius:18px;border-left:5px solid var(--pm-gold);box-shadow:0 10px 28px rgba(10,22,48,.22)}
+.title h1,.title p{color:#fff}.title p{opacity:.85}
+.card{background:#fff;border:1px solid #e4e0d4;border-radius:16px;box-shadow:0 4px 16px rgba(10,22,48,.07)}
+.vg-card{transition:transform .18s,box-shadow .18s,border-color .18s}
+.vg-card:hover{transform:translateY(-3px);border-color:var(--pm-gold);box-shadow:0 12px 28px rgba(10,22,48,.16)}
+.vg-card h3{color:var(--pm-navy)}.vg-card h3 a:hover{color:var(--pm-navy2);text-decoration:underline;text-decoration-color:var(--pm-gold)}
+.vg-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:#eef2f9;color:#33415c;font-size:.88em;font-weight:600}
+.vg-btn{background:linear-gradient(180deg,var(--pm-gold-l),var(--pm-gold));color:var(--pm-navy);border:0;font-weight:800;box-shadow:0 3px 10px rgba(201,162,74,.4);transition:transform .15s,box-shadow .15s}
+.vg-btn:hover{background:linear-gradient(180deg,#f7e3a6,#d4ad55);color:var(--pm-navy);transform:translateY(-1px)}
+a{text-underline-offset:3px}main a:not(.vg-btn):not(.brand){color:#1646b8}
+footer.site{background:linear-gradient(180deg,var(--pm-navy),#060e22);color:#c7d3ea;border-top:2px solid var(--pm-gold)}
+footer.site a{color:var(--pm-gold-l)}
+.skip:focus{background:var(--pm-gold);color:var(--pm-navy)}
+:focus-visible{outline:2px solid var(--pm-gold);outline-offset:2px}
+@media(max-width:480px){.vg-tools{padding:10px;border-radius:14px}.vg-go{padding:0 14px}.vg-count{margin-left:0;width:100%}.vg-card{flex-direction:row}.title{border-radius:14px}}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+
+/* ===== v30: marca de água + código do CV — só no PDF; discretos, acima da linha inferior ===== */
+.wm,.wm-code,.pg-wm,.pg-code{display:none !important}
+@media print{
+  body.is-app .cv-page .pg .pg-wm{display:block !important;position:absolute;left:12mm;bottom:8.5mm;width:5mm;height:5mm;opacity:.2;z-index:5}
+  body.is-app .cv-page .pg .pg-code{display:block !important;position:absolute;right:12mm;bottom:8.9mm;font:600 6.5pt/1 "Poppins",Arial,Helvetica,sans-serif;letter-spacing:.14em;color:#000;opacity:.3;z-index:5}
+  /* carta de apresentação (sem paginação): cantos inferiores da folha */
+  body.is-app .wm{display:block !important;position:fixed;left:12mm;right:auto;bottom:5mm;width:5mm;height:5mm;opacity:.2;z-index:9999}
+  body.is-app .wm-code{display:block !important;position:fixed;right:12mm;bottom:5.4mm;font:600 6.5pt/1 "Poppins",Arial,Helvetica,sans-serif;letter-spacing:.14em;color:#000;opacity:.3;z-index:9999}
+  body:not(.is-app) :is(.wm,.wm-code,.pg-wm,.pg-code){display:none !important}
+}
+/* linha inferior também no CV Executivo (A) */
+.cv-page .pg.a{padding-bottom:15mm}
+.cv-page .pg.a .s-bar{position:absolute;left:0;right:0;bottom:4mm;margin:0}
+.cv-page .pg.a1 .slot{padding:0 0 4mm}
+.cv-page .pg.a.n .slot{padding:15mm 16mm 4mm}
+
+/* ===== v27: sem quebras de layout, texto justificado, rodapé alinhado ===== */
+html,body{max-width:100%;overflow-x:clip}
+main,.wrap,.card,.vg-body,.vg-card>div{min-width:0}
+.card,.vg-body,.vg-meta,.title{overflow-wrap:anywhere}
+.vg-body a,.vg-meta a{overflow-wrap:anywhere;word-break:break-word}
+img,svg,video,iframe,table{max-width:100%}
+main p,main li,.card p,.card li,.vg-body p,.vg-body li{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.title p,.vg-card .vg-meta,.vg-chip,.vg-facts div,.vg-count,.vg-empty,.vg-tools p,h1,h2,h3,.updated,.vg-btn,.cta,.skip{text-align:left}
+.vg-body .vg-meta,.vg-sum{text-align:justify}
+.vg-sum{margin:.5em 0}
+.vg-facts{display:grid;gap:6px;margin:0 0 6px}
+.vg-facts div{overflow-wrap:anywhere}
+footer.site{padding:28px 0 34px}
+footer.site nav{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 18px}
+footer.site .foot-brands{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 10px;text-align:left}
+footer.site .foot-brands img{height:34px;width:auto;border-radius:8px;background:#fff;padding:3px;margin:0}
+footer.site .foot-brands span{flex:1 1 100%;line-height:1.5;color:#c7d3ea}
+footer.site p{text-align:left !important}
+
+/* ===== v28: tudo justificado, página de vaga profissional, ícone no rodapé ===== */
+body:not(.is-app) :is(main,footer.site) :is(p,li,h1,h2,h3,h4,figcaption,summary,dd,blockquote,.vg-facts div,.vg-meta,.vg-sum,.meta,.updated){text-align:justify !important;text-align-last:left;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+body:not(.is-app) :is(.vg-btn,.cta,.vg-chip,.vg-go,.vg-pill,.vg-count,nav a,button,.skip){text-align:left !important;text-align-last:auto}
+body:not(.is-app) .vg-empty,body:not(.is-app) .vg-empty *{text-align:center !important;text-align-last:center}
+.vg-body{border:1px solid #e1dccd;border-top:4px solid var(--pm-gold);border-radius:16px;padding:20px 20px 22px;background:#fff;box-shadow:0 10px 30px rgba(10,22,48,.1)}
+.vg-head{display:flex;align-items:center;gap:14px}
+.vg-head>:first-child{flex:none;border-radius:14px}
+.vg-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:0 0 18px}
+.vg-facts>div{display:block;padding:10px 12px;border:1px solid #e4e0d4;border-left:3px solid var(--pm-gold);border-radius:10px;background:#faf8f2;font-size:.94em;line-height:1.5}
+.vg-facts svg{vertical-align:-3px;margin-right:6px}
+.vg-body h2{display:flex;align-items:center;gap:10px;margin:24px 0 10px;padding:0;color:var(--pm-navy);font-size:1.12em}
+.vg-body h2::before{content:"";flex:none;width:5px;height:1.1em;border-radius:3px;background:linear-gradient(var(--pm-gold-l),var(--pm-gold))}
+.vg-body ul{padding-left:0;list-style:none}
+.vg-body li{position:relative;padding-left:20px;margin:.5em 0}
+.vg-body li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--pm-gold)}
+.vg-body p>a.vg-btn{display:block;text-align:center !important;padding:14px 20px;border-radius:12px;margin:18px 0 6px;text-decoration:none;font-size:1.02em}
+.vg-body>.vg-meta:last-child{margin-top:16px;padding:12px 14px;border:1px dashed var(--pm-gold);border-radius:10px;background:#fbf6e8;font-size:.9em;color:#5b6b85}
+footer.site{position:relative}
+@media(max-width:420px){.vg-body{padding:16px 14px 18px}.vg-facts{grid-template-columns:1fr}}
+
+/* ===== v29: página de vaga em cards (paleta do CV: azul-marinho, azul, vermelho, cinza) ===== */
+.vg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:0 0 14px}
+.vg-c{--ac:#0b1d66;position:relative;margin:0 0 14px;padding:16px 18px;background:#fff;border:1px solid #dfe5f1;border-top:4px solid var(--ac);border-radius:14px;box-shadow:0 6px 18px rgba(11,29,102,.08);overflow:hidden;min-width:0}
+.vg-grid .vg-c{margin:0}
+.vg-c-local,.vg-c-fonte{--ac:#0047ff}.vg-c-prazo,.vg-c-cand{--ac:#e10b17}.vg-c-contrato,.vg-c-desc{--ac:#0b1d66}.vg-c-pub,.vg-c-note{--ac:#8a94a6}
+.vg-c-note{background:#eef1f6}
+.vg-c h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:0;border:0;font-size:.8em;letter-spacing:.07em;text-transform:uppercase;color:var(--ac)}
+.vg-c h2::before{display:none}
+.vg-c h2 svg{flex:none;color:var(--ac)}
+.vg-c p{margin:.5em 0}
+.vg-c>p:first-of-type{margin-top:0}
+.vg-big{font-size:1.1em;font-weight:800;color:#0a0a0a;line-height:1.3;margin:0 0 2px}
+.vg-sub{font-size:.88em;color:#5b6b85;margin:.25em 0 0}
+.vg-c-note .vg-sub{text-align:justify !important}
+.vg-c ul{padding-left:0;list-style:none;margin:.4em 0}
+.vg-c li{position:relative;padding-left:20px;margin:.5em 0}
+.vg-c li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--ac)}
+.vg-c p>a.vg-btn{display:block;text-align:center !important;padding:14px 20px;border-radius:12px;margin:16px 0 4px;text-decoration:none}
+.vg-c-cand .vg-btn{background:linear-gradient(180deg,#ff1f2d,#e10b17);color:#fff;box-shadow:0 4px 12px rgba(225,11,23,.35)}
+.vg-c-cand .vg-btn:hover{background:linear-gradient(180deg,#ff3a46,#c8202f);color:#fff}
+.vg-c-fonte a{font-weight:700;word-break:break-all}
+.vg-card{border-top:4px solid #0b1d66}
+.vg-card .vg-chip{background:#eef1f6;color:#0b1d66}
+@media(max-width:380px){.vg-grid{grid-template-columns:1fr}.vg-c{padding:14px}}
+@media(min-width:900px){.vg-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* ===== v30: cards de requisitos e palavras-chave ===== */
+.vg-c-req{--ac:#0047ff}.vg-c-tags{--ac:#8a94a6}
+.vg-c-tags p{text-align:left !important;display:flex;flex-wrap:wrap;gap:6px}
+.vg-c h3{margin:.8em 0 .3em;font-size:1em;color:var(--ac)}
+
+/* ===== v30: template (app) — azul-marinho do cabeçalho + contornos dourados da página de vagas ===== */
+body.is-app{--ap-navy:#0f2547;--ap-navy-d:#081226;--ap-navy-m:#153560;--ap-gold:#c9a24a;--ap-gold-l:#f0d58a;--ap-lt:#dfe9ff}
+/* cartões e caixas: contorno dourado */
+body.is-app :is(.section-card,.pg-card,.pg-link,.tip-group,.act-group,.pk-mini,.logo-mini,.chip-tab,.ver-btn,.cor-btn,.pk-ver,.pk-th,.pv-m,.apoio-box){border-color:var(--ap-gold)}
+body.is-app :is(.section-card,.pg-card,.tip-group,.act-group,.pk-ver,.pk-th,.pv-m){border-width:1.5px}
+body.is-app .section-card{border-bottom-width:3px}
+body.is-app .section-card:hover,body.is-app :is(.act-btn,.pk-ver,.pk-th):hover{border-color:var(--ap-gold-l);box-shadow:0 6px 18px rgba(201,162,74,.28)}
+body.is-app .bottom-nav{border-top:2px solid var(--ap-gold)}
+body.is-app :is(.pg-h,.pg-mv,.apoio){border-left-color:var(--ap-gold)}
+body.is-app .pk-h::before{background:var(--ap-gold)}
+body.is-app .tip-list li::before{background:var(--ap-gold)}
+body.is-app .field :is(input,select,textarea):focus{border-color:var(--ap-gold);box-shadow:0 0 0 3px rgba(201,162,74,.25)}
+/* botões principais: azul-marinho do cabeçalho, contorno dourado, letra azul clara */
+body.is-app :is(.btn-primary,.proj-bar .proj-main){background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy) 80%);border:1.5px solid var(--ap-gold);color:var(--ap-lt)}
+body.is-app :is(.btn-primary,.proj-bar .proj-main):hover{background:linear-gradient(120deg,var(--ap-navy),var(--ap-navy-m));border-color:var(--ap-gold-l);color:#fff}
+/* botões neutros (ex.: Abrir projecto): contorno dourado */
+body.is-app :is(.btn:not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.btn-light-outline),.proj-bar button:not(.proj-main)){border:1.5px solid var(--ap-gold);color:var(--ap-navy)}
+body.is-app :is(.btn:not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.btn-light-outline),.proj-bar button:not(.proj-main)):hover{background:#fbf6e8}
+/* seleccionados / activos: azul-marinho com letra azul clara */
+body.is-app :is(.ver-btn.active,.pk-ver.active,.pk-th.active,.pv-m.active,.cor-btn[data-cor="padrao"].active,.chip-tab.active){background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));border-color:var(--ap-gold);color:var(--ap-lt)}
+body.is-app :is(.ver-btn.active,.pk-ver.active,.pk-th.active,.pv-m.active) :is(b,span,small,div){color:var(--ap-lt)}
+body.is-app :is(.pk-chk,.pv-m .pv-chk){background:var(--ap-gold);color:var(--ap-navy-d)}
+body.is-app .sw.active,body.is-app .sw[data-cor="relevo"].active{box-shadow:0 0 0 2.5px var(--ap-gold)}
+body.is-app .nav-btn.active{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-gold-l);box-shadow:0 0 0 1.5px var(--ap-gold),0 3px 8px rgba(8,18,38,.35)}
+body.is-app .nav-btn.active span{text-shadow:none}
+body.is-app .nav-btn.active svg{filter:none}
+/* ícones redondos / quadrados: fundo azul-marinho, ícone azul claro, aro dourado */
+body.is-app :is(.sc-icon,.pg-ico,.tips-header-icon,.tip-group summary .tg-ico,.dl-ico,.ah-ico,.act-btn .ai,.social-btn,.foot-links button span){background:linear-gradient(135deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-lt);border:1.5px solid var(--ap-gold)}
+body.is-app .social-btn:hover{background:var(--ap-navy-m);color:#fff}
+/* etiquetas */
+body.is-app .chip{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-lt);border-color:var(--ap-gold)}
+body.is-app .chip button{color:var(--ap-gold-l)}body.is-app .chip .lvl{color:#aebfe6}
+/* textos que eram azul vivo: azul-marinho */
+body.is-app :is(.sc-label,.sc-optional,.footer-brand .b2,.footer-tagline,.modal-subtitle,.pg-link b,.site-links a,.foot-links button){color:#1c5ff0}
+body.is-app .act-btn{border:1.5px solid var(--ap-gold)}
+body.is-app .home-seg{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));border:1.5px solid var(--ap-gold)}
+body.is-app .home-seg button{color:var(--ap-lt)}
+body.is-app .home-seg button.on{background:linear-gradient(180deg,var(--ap-gold-l),var(--ap-gold));color:var(--ap-navy-d);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+
+/* ===== v31: Dados Pessoais centrados no CV·B (Tradicional) ===== */
+.cv-page .sec-dp .sec-h{text-align:center}
+.cv-page .sec-dp .dp{justify-content:center;text-align:center;gap:2mm 7mm}
+.cv-page .sec-dp .dp .ct{justify-content:center;text-align:center}
+
+/* ===== v32: cabeçalho elegante, rodapé centrado, pesquisa em card horizontal, sem linhas ===== */
+header.site .brand,nav.main a{font-family:"Poppins",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+header.site .brand span{font-weight:700;font-size:1.02em;letter-spacing:.01em}
+nav.main a{font-weight:600;font-size:14.5px;letter-spacing:.015em;padding:8px 15px}
+nav.main a[aria-current],nav.main a[aria-current="page"]{font-weight:700}
+@media(max-width:480px){nav.main{display:flex;justify-content:center;gap:4px}nav.main a{padding:7px 11px;font-size:13px}}
+.vg-body h2,main h2{border-bottom:0}
+/* rodapé: tudo centrado, logótipo em cima e nome por baixo */
+html body:not(.is-app) footer.site .wrap,html body:not(.is-app) footer.site .wrap :is(p,span,div,nav,a){text-align:center !important;text-align-last:center !important}
+footer.site{padding:30px 0 34px}
+footer.site nav{justify-content:center;gap:8px 22px;margin:0 0 22px;padding:0;border:0}
+footer.site nav a{font-weight:600;text-decoration:none}
+footer.site .foot-brands{display:flex;justify-content:center;align-items:flex-start;gap:14px 40px;flex-wrap:wrap;margin:0 0 16px}
+footer.site .foot-brands .fb{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:120px}
+footer.site .foot-brands .fb img{height:52px;width:auto;border-radius:12px;background:#fff;padding:4px;margin:0}
+footer.site .foot-brands .fb span{flex:none;font:600 13.5px/1.3 "Poppins",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#fff}
+footer.site .foot-copy{margin:0;font-size:12.5px;color:#aebcd8}
+/* pesquisa: card horizontal, só campo + botão */
+.vg-tools{position:static;margin:0 0 18px;padding:14px;border-radius:18px;background:#fff;border:1px solid #e4e0d4;border-top:4px solid var(--pm-gold);box-shadow:0 10px 28px rgba(10,22,48,.12);backdrop-filter:none}
+.vg-form{display:flex;flex-direction:row;align-items:stretch;gap:10px;margin:0}
+.vg-field input{min-height:50px;border-radius:14px;background:#faf8f2}
+.vg-go{min-height:50px;padding:0 24px;border-radius:14px;font-family:"Poppins",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:14.5px;letter-spacing:.02em;border:1.5px solid var(--pm-gold);color:#f0d58a;flex:0 0 auto}
+.vg-res{margin:0 0 12px;padding:0 4px;font-weight:700;font-size:.95em;color:var(--pm-navy);text-align:left !important}
+.vg-res[hidden],.vg-intro[hidden]{display:none !important}
+/* divisores entre vagas */
+.vg-card{margin:0 0 18px;border-top:4px solid #0b1d66;border-bottom:3px solid var(--pm-gold)}
+.vg-card+.vg-card{margin-top:18px}
+@media(max-width:380px){.vg-go{padding:0 16px}}
+/* v32: sem linha por baixo dos títulos das páginas internas da app (Privacidade, Cookies, Termos…) */
+.pg-title,body.is-app .pg-title{border-bottom:0 !important;padding-bottom:0 !important}
+
+/* v33: ícones das redes sociais com as cores originais das marcas (fundo branco) */
+body.is-app .social-btn,body.is-app .social-btn:hover{background:#fff !important;border:1.5px solid var(--ap-gold) !important;color:inherit}
+body.is-app .social-btn:hover{box-shadow:0 4px 12px rgba(201,162,74,.35)}
+body.is-app .social-btn svg{width:26px;height:26px}
+body.is-app .pg-ico.pg-brand{background:#fff !important;background-image:none !important;border:1.5px solid var(--ap-gold) !important}
+.pg-ico.pg-brand svg{width:24px;height:24px}
+.pg-ico.pg-brand svg{stroke:none}
