@@ -151,6 +151,10 @@
   {
    "source": "/admin",
    "destination": "/admin/index.html"
+  },
+  {
+   "source": "/appi/callback",
+   "destination": "/api/callback"
   }
  ],
  "cleanUrls": true,

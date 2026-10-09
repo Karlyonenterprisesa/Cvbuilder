@@ -8,3 +8,7 @@ ADVISION CV BUILDER — DECAP CMS (admin) — checklist
 4) Abra https://SEU-DOMINIO.vercel.app/admin > Login with GitHub.
 5) /api/callback aberto directamente mostra apenas um aviso — é normal; só funciona dentro do login.
 Cada vaga gravada cria content/vagas/<nome>.json e a Vercel corre "node build.js" (lista, páginas /vaga/, faixa, sitemap).
+
+0) Diagnostico: abra https://SEU-DOMINIO.vercel.app/api/diagnostico — mostra se as variaveis estao definidas e qual e o callback exacto.
+LOGIN COM E-MAIL: o Decap so entra por e-mail (Netlify Identity/Git Gateway) se o site estiver alojado na Netlify. Na Vercel o unico login e o do GitHub.
+Na pagina do GitHub pode entrar com o e-mail e a palavra-passe da conta (nao precisa do "username").
