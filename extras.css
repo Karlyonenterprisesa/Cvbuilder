@@ -146,9 +146,8 @@ footer.site a{color:var(--pm-gold-l)}
 @media(max-width:480px){.vg-tools{padding:10px;border-radius:14px}.vg-go{padding:0 14px}.vg-count{margin-left:0;width:100%}.vg-card{flex-direction:row}.title{border-radius:14px}}
 @media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
 
-/* ===== v26: marca de água Alcartel — escondida no ecrã, visível na pré-visualização do CV e ao imprimir / guardar PDF ===== */
+/* ===== v28: marca de água Alcartel — nunca aparece no site (nem na pré-visualização); só no PDF do CV e da carta (imprimir / guardar PDF) ===== */
 .wm{display:none !important}
-body.is-app:has(.view-preview) .wm{display:block !important;left:auto !important;right:10px;bottom:10px;width:26px;height:26px;opacity:.3}
 @media print{
   body.is-app .wm{display:block !important;position:fixed !important;left:auto !important;right:6mm !important;bottom:5mm !important;width:11mm !important;height:11mm !important;opacity:.22 !important;z-index:9999}
   body:not(.is-app) .wm{display:none !important}
