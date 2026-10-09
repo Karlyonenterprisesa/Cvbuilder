@@ -224,3 +224,47 @@ footer.site::after{content:"";position:absolute;right:16px;bottom:16px;width:46p
 .vg-c-req{--ac:#0047ff}.vg-c-tags{--ac:#8a94a6}
 .vg-c-tags p{text-align:left !important;display:flex;flex-wrap:wrap;gap:6px}
 .vg-c h3{margin:.8em 0 .3em;font-size:1em;color:var(--ac)}
+
+/* ===== v30: template (app) — azul-marinho do cabeçalho + contornos dourados da página de vagas ===== */
+body.is-app{--ap-navy:#0f2547;--ap-navy-d:#081226;--ap-navy-m:#153560;--ap-gold:#c9a24a;--ap-gold-l:#f0d58a;--ap-lt:#dfe9ff}
+/* cartões e caixas: contorno dourado */
+body.is-app :is(.section-card,.pg-card,.pg-link,.tip-group,.act-group,.pk-mini,.logo-mini,.chip-tab,.ver-btn,.cor-btn,.pk-ver,.pk-th,.pv-m,.apoio-box){border-color:var(--ap-gold)}
+body.is-app :is(.section-card,.pg-card,.tip-group,.act-group,.pk-ver,.pk-th,.pv-m){border-width:1.5px}
+body.is-app .section-card{border-bottom-width:3px}
+body.is-app .section-card:hover,body.is-app :is(.act-btn,.pk-ver,.pk-th):hover{border-color:var(--ap-gold-l);box-shadow:0 6px 18px rgba(201,162,74,.28)}
+body.is-app .bottom-nav{border-top:2px solid var(--ap-gold)}
+body.is-app :is(.pg-h,.pg-mv,.apoio){border-left-color:var(--ap-gold)}
+body.is-app .pk-h::before{background:var(--ap-gold)}
+body.is-app .tip-list li::before{background:var(--ap-gold)}
+body.is-app .field :is(input,select,textarea):focus{border-color:var(--ap-gold);box-shadow:0 0 0 3px rgba(201,162,74,.25)}
+/* botões principais: azul-marinho do cabeçalho, contorno dourado, letra azul clara */
+body.is-app :is(.btn-primary,.proj-bar .proj-main){background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy) 80%);border:1.5px solid var(--ap-gold);color:var(--ap-lt)}
+body.is-app :is(.btn-primary,.proj-bar .proj-main):hover{background:linear-gradient(120deg,var(--ap-navy),var(--ap-navy-m));border-color:var(--ap-gold-l);color:#fff}
+/* botões neutros (ex.: Abrir projecto): contorno dourado */
+body.is-app :is(.btn:not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.btn-light-outline),.proj-bar button:not(.proj-main)){border:1.5px solid var(--ap-gold);color:var(--ap-navy)}
+body.is-app :is(.btn:not(.btn-primary):not(.btn-danger):not(.btn-ghost):not(.btn-light-outline),.proj-bar button:not(.proj-main)):hover{background:#fbf6e8}
+/* seleccionados / activos: azul-marinho com letra azul clara */
+body.is-app :is(.ver-btn.active,.pk-ver.active,.pk-th.active,.pv-m.active,.cor-btn[data-cor="padrao"].active,.chip-tab.active){background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));border-color:var(--ap-gold);color:var(--ap-lt)}
+body.is-app :is(.ver-btn.active,.pk-ver.active,.pk-th.active,.pv-m.active) :is(b,span,small,div){color:var(--ap-lt)}
+body.is-app :is(.pk-chk,.pv-m .pv-chk){background:var(--ap-gold);color:var(--ap-navy-d)}
+body.is-app .sw.active,body.is-app .sw[data-cor="relevo"].active{box-shadow:0 0 0 2.5px var(--ap-gold)}
+body.is-app .nav-btn.active{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-gold-l);box-shadow:0 0 0 1.5px var(--ap-gold),0 3px 8px rgba(8,18,38,.35)}
+body.is-app .nav-btn.active span{text-shadow:none}
+body.is-app .nav-btn.active svg{filter:none}
+/* ícones redondos / quadrados: fundo azul-marinho, ícone azul claro, aro dourado */
+body.is-app :is(.sc-icon,.pg-ico,.tips-header-icon,.tip-group summary .tg-ico,.dl-ico,.ah-ico,.act-btn .ai,.social-btn,.foot-links button span){background:linear-gradient(135deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-lt);border:1.5px solid var(--ap-gold)}
+body.is-app .social-btn:hover{background:var(--ap-navy-m);color:#fff}
+/* etiquetas */
+body.is-app .chip{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));color:var(--ap-lt);border-color:var(--ap-gold)}
+body.is-app .chip button{color:var(--ap-gold-l)}body.is-app .chip .lvl{color:#aebfe6}
+/* textos que eram azul vivo: azul-marinho */
+body.is-app :is(.sc-optional,.footer-brand .b2,.footer-tagline,.modal-subtitle,.pg-link b,.site-links a,.foot-links button){color:var(--ap-navy-m)}
+body.is-app .act-btn{border:1.5px solid var(--ap-gold)}
+body.is-app .home-seg{background:linear-gradient(120deg,var(--ap-navy-d),var(--ap-navy));border:1.5px solid var(--ap-gold)}
+body.is-app .home-seg button{color:var(--ap-lt)}
+body.is-app .home-seg button.on{background:linear-gradient(180deg,var(--ap-gold-l),var(--ap-gold));color:var(--ap-navy-d);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+
+/* ===== v31: Dados Pessoais centrados no CV·B (Tradicional) ===== */
+.cv-page .sec-dp .sec-h{text-align:center}
+.cv-page .sec-dp .dp{justify-content:center;text-align:center;gap:2mm 7mm}
+.cv-page .sec-dp .dp .ct{justify-content:center;text-align:center}

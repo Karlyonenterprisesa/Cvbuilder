@@ -429,7 +429,7 @@ function uid(){return Math.random().toString(36).slice(2,10);}
 
 function defaultState(){
   return {
-    personal:{nome:"",profissao:"",telefone:"",email:"",localizacao:"",dataNascimento:"",nacionalidade:"",linkedin:"",foto:""},
+    personal:{nome:"",profissao:"",telefone:"",telefone2:"",email:"",localizacao:"",dataNascimento:"",nacionalidade:"",linkedin:"",foto:""},
     ui:{version:"A"}, profile:"", education:[], certifications:[], experience:[], skills:[], languages:[], portfolio:[], references:[],
     coverLetter:{cidade:"",data:"",destinatarioEmpresa:"",destinatarioDepartamento:"",assunto:"",corpo:""}
   };
@@ -741,9 +741,10 @@ function renderPersonalEditor(){
     </div>
   </div>
   <div class="field"><label>Nome Completo</label><input type="text" id="f_nome" value="${esc(p.nome)}"></div>
+  <div class="field"><label>Profissão</label><input type="text" id="f_profissao" value="${esc(p.profissao)}"></div>
   <div class="field-row">
-    <div class="field"><label>Profissão</label><input type="text" id="f_profissao" value="${esc(p.profissao)}"></div>
-    <div class="field"><label>Telefone</label><input type="tel" id="f_telefone" value="${esc(p.telefone)}"></div>
+    <div class="field"><label>Telefone</label><input type="tel" id="f_telefone" placeholder="+258 ..." value="${esc(p.telefone)}"></div>
+    <div class="field"><label>Telefone 2 (opcional)</label><input type="tel" id="f_telefone2" placeholder="+258 ..." value="${esc(p.telefone2)}"></div>
   </div>
   <div class="field"><label>E-mail</label><input type="email" id="f_email" value="${esc(p.email)}"></div>
   <div class="field"><label>Residência</label><input type="text" id="f_localizacao" placeholder="Bairro, Quarteirão, Cidade" value="${esc(p.localizacao)}"><button type="button" class="btn btn-sm" id="geoBtn" style="margin-top:6px">Usar a minha localização</button></div>
@@ -968,7 +969,7 @@ function refreshEditorInner(){
 }
 
 function bindPersonal(){
-  const map = {f_nome:"nome",f_profissao:"profissao",f_telefone:"telefone",f_email:"email",
+  const map = {f_nome:"nome",f_profissao:"profissao",f_telefone:"telefone",f_telefone2:"telefone2",f_email:"email",
     f_localizacao:"localizacao",f_dataNascimento:"dataNascimento",f_nacionalidade:"nacionalidade",f_linkedin:"linkedin"};
   Object.keys(map).forEach(id=>{
     const el = document.getElementById(id);
@@ -1170,7 +1171,7 @@ function refreshEditorInner(){
 }
 
 function bindPersonal(){
-  const map = {f_nome:"nome",f_profissao:"profissao",f_telefone:"telefone",f_email:"email",
+  const map = {f_nome:"nome",f_profissao:"profissao",f_telefone:"telefone",f_telefone2:"telefone2",f_email:"email",
     f_localizacao:"localizacao",f_dataNascimento:"dataNascimento",f_nacionalidade:"nacionalidade",f_linkedin:"linkedin"};
   Object.keys(map).forEach(id=>{
     const el = document.getElementById(id);
@@ -1405,7 +1406,7 @@ function renderSidebar(){
   const _temC = p.localizacao||p.telefone||p.email||p.linkedin||p.dataNascimento||p.nacionalidade;
   html += `<div class="${_temC?'':'ph-sec'}"><div class="cv-side-title">Contactos</div><div class="cv-contacts-side">`;
   if(p.localizacao) html += `<div class="row">${ico('pin')}<span>${esc(p.localizacao)}</span></div>`;
-  if(p.telefone) html += `<div class="row">${ico('phone')}<span>${esc(p.telefone)}</span></div>`;
+  if(phoneText(p)) html += `<div class="row">${ico('phone')}<span>${esc(phoneText(p))}</span></div>`;
   if(p.email) html += `<div class="row">${ico('mail')}<span>${esc(p.email)}</span></div>`;
   if(p.linkedin) html += `<div class="row">${ico('link')}<span>${esc(p.linkedin)}</span></div>`;
   if(p.dataNascimento) html += `<div class="row">${ico('cake')}<span>${esc(p.dataNascimento)}</span></div>`;
@@ -1477,7 +1478,7 @@ function renderLetterFooter(){
   const p = state.personal;
   let html = `<div class="cl-footer">`;
   if(p.localizacao) html += `<div class="item">${ico('pin')}<span>${esc(p.localizacao)}</span></div>`;
-  if(p.telefone) html += `<div class="item">${ico('phone')}<span>${esc(p.telefone)}</span></div>`;
+  if(phoneText(p)) html += `<div class="item">${ico('phone')}<span>${esc(phoneText(p))}</span></div>`;
   if(p.email) html += `<div class="item">${ico('mail')}<span>${esc(p.email)}</span></div>`;
   if(p.linkedin) html += `<div class="item">${ico('link')}<span>${esc(p.linkedin)}</span></div>`;
   if(!(p.localizacao||p.telefone||p.email||p.linkedin)) html += PH_CONTACTS.map(x=>`<div class="item ph">${ico(x[0])}<span>${x[1]}</span></div>`).join("");
@@ -1599,10 +1600,11 @@ function ulHtml(d,cls){
   return l.length?`<div class="${cls}">${l.map(x=>`<p>${esc(x)}</p>`).join("")}</div>`:"";
 }
 const PERSONAL_FIELDS=[["pin","Residência","localizacao"],["phone","Telefone","telefone"],["mail","E-mail","email"],["link","LinkedIn / Website","linkedin"],["cake","Data de Nascimento","dataNascimento"],["globe","Nacionalidade","nacionalidade"]];
+function phoneText(p){ return [p.telefone,p.telefone2].map(x=>(x||"").trim()).filter(Boolean).join("  |  "); }
 function personalItems(){
   const p=state.personal;
   return PERSONAL_FIELDS.map(([i,lab,k])=>{
-    const v=(p[k]||"").trim();
+    const v=(k==="telefone"?phoneText(p):(p[k]||"")).trim();
     if(!v) return [i,lab,false];
     return [i,k==="dataNascimento"?(formatPtDate(v)||v):v,true];
   });
@@ -1610,7 +1612,7 @@ function personalItems(){
 function contactItems(){
   const p=state.personal, r=[];
   if(p.localizacao) r.push(["pin",p.localizacao]);
-  if(p.telefone) r.push(["phone",p.telefone]);
+  if(phoneText(p)) r.push(["phone",phoneText(p)]);
   if(p.email) r.push(["mail",p.email]);
   if(p.linkedin) r.push(["link",p.linkedin]);
   return r;
@@ -1676,7 +1678,7 @@ function buildDoc(letter){
     } else {
       const chips=a=>a.length?`<div class="chips">${a.join("")}</div>`:"";
       const mk=a=>a.length?`<div class="mk-list">${a.map(x=>`<div class="f-row ${x[0]}"><span>${x[1]}</span></div>`).join("")}</div>`:"";
-      const dp=`<div class="sec${noneP?' ph-sec':''}"><div class="sec-h">Dados Pessoais</div><div class="dp">${pi.map(x=>`<span class="ct${x[2]?'':' ph'}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div></div>`;
+      const dp=`<div class="sec sec-dp${noneP?' ph-sec':''}"><div class="sec-h">Dados Pessoais</div><div class="dp">${pi.map(x=>`<span class="ct${x[2]?'':' ph'}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div></div>`;
       html=`${headC}<div class="s-body">${dp}${main()}${sec("Habilidades",mk(state.skills.map(k=>["f-sk",esc(k.nome)])))}${sec("Idiomas",mk(state.languages.map(l=>["f-lg",esc(l.idioma)+" — <b>"+esc(lvlT(l.nivel))+"</b>"])))}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div><div class="s-bar"></div>`;
     }
   }
