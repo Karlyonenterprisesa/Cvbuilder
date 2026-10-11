@@ -8,7 +8,7 @@
   var CFG = {
     ADSENSE_CLIENT: "ca-pub-5846610296337932",
     GA_ID: "",
-    AD_SLOT: ""
+    AD_SLOT: "4435749589"
   };
   var KEY = "adivision_consent_v1";
   var body = function () { return document.body; };
