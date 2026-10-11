@@ -38,8 +38,9 @@
     var batch = [], len = 0;
     while (tq.length && batch.length < 30 && len < 2500) { var k = tq.shift(); batch.push(k); len += k.length; }
     translate(batch).then(function (out) {
-      batch.forEach(function (k, i) { delete tqs[k]; if (out && out[i]) tcache[k] = out[i]; else tfail[k] = 1; });
-      tsave();
+      var bad = false;
+      batch.forEach(function (k, i) { delete tqs[k]; if (out && out[i]) tcache[k] = out[i]; else { tfail[k] = 1; bad = true; } });
+      tsave(); if (bad) twarn();
     }, function () {
       batch.forEach(function (k) { delete tqs[k]; tfail[k] = 1; }); twarn();
     }).then(function () {
@@ -52,8 +53,16 @@
     try { document.dispatchEvent(new Event("cvx:tr")); } catch (e) {}
     var w = twait; twait = []; w.forEach(function (f) { try { f(); } catch (e) {} });
   }
-  function twarn() { if (!warned && typeof window.toast === "function") { warned = true; try { window.toast("Não foi possível traduzir: verifique a ligação à Internet."); } catch (e) {} } }
-  function translate(units) { return post(units).catch(function () { return direct(units); }); }
+  function twarn() { if (!warned && typeof window.toast === "function") { warned = true; try { window.toast("Não foi possível traduzir tudo. Verifique a Internet e toque em EN outra vez."); } catch (e) {} } }
+  function translate(units) {
+    return post(units).catch(function () { return null; }).then(function (out) {
+      out = out || new Array(units.length);
+      var miss = []; units.forEach(function (u, i) { if (!out[i]) miss.push(i); });
+      if (!miss.length) return out;
+      /* o servidor devolveu vazio (ex.: Google bloqueou o IP da Vercel): tenta directamente do telemóvel */
+      return direct(miss.map(function (i) { return units[i]; })).then(function (r) { miss.forEach(function (i, j) { if (r[j]) out[i] = r[j]; }); return out; }, function () { return out; });
+    }).then(function (out) { if (!out.some(Boolean)) throw 0; return out; });
+  }
   function post(units) {
     return fetch("/api/traduzir", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texts: units }) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
