@@ -1,8 +1,6 @@
 ONDE COLOCAR
-Coloque os 3 ficheiros na RAIZ do projeto (ao lado de manifest.json, site.js, vercel.json), substituindo os existentes:
-
-  index.html -> raiz
-  extras.css -> raiz
-  sw.js      -> raiz (cache v32, forca a atualizacao no telemovel)
-
+Copie os 3 ficheiros para a RAIZ do projeto, substituindo os existentes:
+  index.html
+  extras.css
+  sw.js  (cache v33, forca a atualizacao)
 Depois de publicar, feche e reabra o site.

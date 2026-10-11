@@ -509,6 +509,82 @@ function installApp(){
 }
 function requestPersist(){ if(navigator.storage&&navigator.storage.persist){ return navigator.storage.persist().catch(()=>false); } return Promise.resolve(false); }
 
+/* ---- Logótipo: por link da imagem e por pesquisa ---- */
+function setLogo(section,src){
+  const prev=document.getElementById(`logoPreview_${section}`), rm=document.getElementById(`logoRemove_${section}`);
+  if(!prev) return;
+  prev.style.backgroundImage=`url('${String(src).replace(/'/g,"%27")}')`; prev.textContent=""; prev.classList.remove("empty");
+  prev.dataset.logo=src; delete prev.dataset.rm;
+  if(rm) rm.style.display="";
+}
+function urlToLogo(url,done){
+  const tries=[url,"https://wsrv.nl/?output=png&w=320&url="+encodeURIComponent(url)];
+  const next=i=>{
+    if(i>=tries.length){
+      const im=new Image();
+      im.onload=()=>done(url,true);
+      im.onerror=()=>done(null);
+      im.src=url; return;
+    }
+    fetch(tries[i],{mode:"cors"}).then(r=>{ if(!r.ok) throw 0; return r.blob(); })
+      .then(b=>{ if(!/^image\//.test(b.type)) throw 0; fileToLogo(b,d=>done(d,false)); })
+      .catch(()=>next(i+1));
+  };
+  next(0);
+}
+async function searchLogos(q){
+  const enc=encodeURIComponent, J=u=>fetch(u).then(r=>r.json()).catch(()=>null);
+  const base="action=query&format=json&origin=*&generator=search&gsrlimit=";
+  const [cm,pt,en]=await Promise.all([
+    J(`https://commons.wikimedia.org/w/api.php?${base}8&gsrnamespace=6&gsrsearch=${enc(q+" logo")}&prop=imageinfo&iiprop=url&iiurlwidth=300`),
+    J(`https://pt.wikipedia.org/w/api.php?${base}5&gsrsearch=${enc(q)}&prop=pageimages&piprop=thumbnail&pithumbsize=300`),
+    J(`https://en.wikipedia.org/w/api.php?${base}5&gsrsearch=${enc(q)}&prop=pageimages&piprop=thumbnail&pithumbsize=300`)
+  ]);
+  const pages=d=>d&&d.query?Object.values(d.query.pages).sort((a,b)=>a.index-b.index):[];
+  const out=[], seen={};
+  const add=src=>{ if(src&&!seen[src]&&out.length<9){ seen[src]=1; out.push(src); } };
+  pages(cm).forEach(p=>{ const i=p.imageinfo&&p.imageinfo[0]; if(i) add(i.thumburl||i.url); });
+  pages(pt).forEach(p=>add(p.thumbnail&&p.thumbnail.source));
+  pages(en).forEach(p=>add(p.thumbnail&&p.thumbnail.source));
+  return out;
+}
+document.addEventListener("click",ev=>{
+  const t=ev.target.closest&&ev.target.closest("[data-logolink],[data-logosearch],[data-logouse],[data-logopick]"); if(!t) return;
+  const sec=t.dataset.logolink||t.dataset.logosearch||t.dataset.logouse||t.dataset.logopick;
+  const panel=document.getElementById(`logoPanel_${sec}`); if(!panel) return;
+  if(t.dataset.logolink){
+    panel.innerHTML=`<div class="lp-row"><input type="url" id="logoUrl_${sec}" placeholder="Cole aqui o link da imagem (https://…)" autocomplete="off"><button type="button" class="btn btn-sm btn-primary" data-logouse="${sec}">Usar</button></div>`;
+    const i=document.getElementById(`logoUrl_${sec}`); if(i) i.focus(); return;
+  }
+  if(t.dataset.logouse){
+    const i=document.getElementById(`logoUrl_${sec}`); let u=(i&&i.value||"").trim(); if(!u) return;
+    if(!/^https?:\/\//i.test(u)) u="https://"+u;
+    toast("A carregar imagem…");
+    urlToLogo(u,(r,remote)=>{
+      if(!r){ toast("Não foi possível carregar a imagem deste link."); return; }
+      setLogo(sec,r); panel.innerHTML="";
+      toast(remote?"Imagem guardada como ligação: precisa de Internet para aparecer.":"Logótipo carregado.");
+    }); return;
+  }
+  if(t.dataset.logopick){
+    toast("A carregar imagem…");
+    urlToLogo(t.dataset.src,(r,remote)=>{
+      if(!r){ toast("Não foi possível usar esta imagem."); return; }
+      setLogo(sec,r); panel.innerHTML=""; toast("Logótipo carregado.");
+    }); return;
+  }
+  /* pesquisar */
+  const inp=document.getElementById(`ff_${sec}_instituicao`), q=(inp&&inp.value||"").trim();
+  if(!q){ toast("Escreva primeiro o nome da instituição."); if(inp) inp.focus(); return; }
+  const g="https://www.google.com/search?tbm=isch&q="+encodeURIComponent(q+" logo");
+  panel.innerHTML=`<div class="lp-msg">A pesquisar “${esc(q)}”…</div>`;
+  searchLogos(q).then(list=>{
+    const more=`<div class="lp-msg">Não é este? <a href="${g}" target="_blank" rel="noopener">Pesquisar no Google Imagens</a>, copie o endereço da imagem e use <b>Colar link</b>.</div>`;
+    if(!list.length){ panel.innerHTML=`<div class="lp-msg">Sem resultados para “${esc(q)}”, ou sem ligação à Internet.</div>`+more; return; }
+    panel.innerHTML=`<div class="lp-msg">Toque na imagem para usar:</div><div class="lp-grid">${list.map(u=>`<button type="button" class="lp-item" data-logopick="${sec}" data-src="${u}"><img src="${u}" alt="" loading="lazy"></button>`).join("")}</div>`+more;
+  });
+});
+
 function fileToLogo(file, cb){
   const reader = new FileReader();
   reader.onerror = () => toast("Não foi possível ler o ficheiro.");
@@ -845,9 +921,12 @@ function renderListEditor(section, singular, fields, addLabel){
       <div class="upl-btns">
         <label class="btn btn-sm file-label" for="logoInput_${section}">${hasLogo?'Trocar logótipo':'Carregar logótipo'}</label>
         <input type="file" id="logoInput_${section}" accept="image/*" style="display:none;">
+        <button type="button" class="btn btn-sm btn-ghost" data-logolink="${section}">Colar link</button>
+        <button type="button" class="btn btn-sm btn-ghost" data-logosearch="${section}">Pesquisar</button>
         <button type="button" class="btn btn-sm btn-ghost" id="logoRemove_${section}" style="${hasLogo?'':'display:none'}">Remover</button>
       </div>
     </div>
+    <div class="logo-panel" id="logoPanel_${section}"></div>
     </div>`;
     let rowBuffer = [];
     fields.forEach((f,idx)=>{
