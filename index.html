@@ -1649,6 +1649,7 @@ function buildDoc(letter){
   const pi=personalItems(), noneP=!pi.some(x=>x[2]);
   const photo=cls=>p.foto?`<img class="${cls}" src="${p.foto}" alt="Fotografia">`:`<div class="${cls} ph-sec">Foto</div>`;
   const nameC=p.nome&&p.nome.trim()?renderNameHtml(p.nome,""):'<span class="ph">Seu Nome Completo</span>';
+  const headA=`<div class="s-top-w"><div class="s-top"></div></div><div class="s-head has-ph">${photo("hp-photo")}<div class="d-name">${nameC}</div><div class="d-role">${roleH}</div><div class="d-rule"></div></div>`;
   const headC=`<div class="s-top-w"><div class="s-top"></div></div><div class="s-head"><div class="d-name">${nameC}</div><div class="d-role">${roleH}</div><div class="d-rule"></div></div>`;
   const foot=()=>`<div class="s-foot${none?' ph-sec':''}">${cl.map(x=>`<span class="ct${none?' ph':''}"><span class="ic">${ico(x[0])}</span><span>${esc(x[1])}</span></span>`).join("")}</div><div class="s-bar"></div>`;
   const strip=cls=>`<div class="${cls}${none?' ph-sec':''}">${cl.map(x=>`<span class="ct${none?' ph':''}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div>`;
@@ -1667,27 +1668,17 @@ function buildDoc(letter){
     return h;
   };
   let html;
-  if(v==="A"){
+  {
     if(letter){
-      html=`<div class="lf-band">${photo("d-photo")}<div><div class="d-name">${nameH}</div><div class="d-role">${roleH}</div></div></div><div class="l-wrap">${letterCore("Ao")}</div>${foot()}`;
-    } else {
-      const sb=(t,b)=>`<div class="${b?'':'ph-sec'}"><div class="f-st">${t}</div>${b||`<div class="f-row ph">${PH_TXT[t]}</div>`}</div>`;
-      const contacts=pi.map(x=>`<div class="f-row${x[2]?'':' ph'}">${ico(x[0])}<span>${esc(x[1])}</span></div>`).join("");
-      const skills=state.skills.length?state.skills.map(k=>`<div class="f-row f-sk"><span>${esc(k.nome)}</span></div>`).join(""):"";
-      const langs=state.languages.length?state.languages.map(l=>{const n=langLevelToDots(l.nivel);return `<div class="f-row f-lg"><span>${esc(l.idioma)} — <b>${esc(lvlT(l.nivel))}</b></span></div>`;}).join(""):"";
-      html=`<div class="f-body"><div class="f-side">${photo("d-photo")}<div class="${noneP?'ph-sec':''}"><div class="f-st">Dados Pessoais</div>${contacts}</div>${sb("Habilidades",skills)}${sb("Idiomas",langs)}</div><div class="f-main">${head}${main()}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div></div>`;
-    }
-  } else {
-    if(letter){
-      html=`${headC}<div class="l-wrap">${letterCore("Ao")}</div>${foot()}`;
+      html=`${v==="A"?headA:headC}<div class="l-wrap">${letterCore("Ao")}</div>${foot()}`;
     } else {
       const chips=a=>a.length?`<div class="chips">${a.join("")}</div>`:"";
       const mk=a=>a.length?`<div class="mk-list">${a.map(x=>`<div class="f-row ${x[0]}"><span>${x[1]}</span></div>`).join("")}</div>`:"";
       const dp=`<div class="sec sec-dp${noneP?' ph-sec':''}"><div class="sec-h">Dados Pessoais</div><div class="dp">${pi.map(x=>`<span class="ct${x[2]?'':' ph'}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div></div>`;
-      html=`${headC}<div class="s-body">${dp}${main()}${sec("Habilidades",mk(state.skills.map(k=>["f-sk",esc(k.nome)])))}${sec("Idiomas",mk(state.languages.map(l=>["f-lg",esc(l.idioma)+" — <b>"+esc(lvlT(l.nivel))+"</b>"])))}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div><div class="s-bar"></div>`;
+      html=`${v==="A"?headA:headC}<div class="s-body">${dp}${main()}${sec("Habilidades",mk(state.skills.map(k=>["f-sk",esc(k.nome)])))}${sec("Idiomas",mk(state.languages.map(l=>["f-lg",esc(l.idioma)+" — <b>"+esc(lvlT(l.nivel))+"</b>"])))}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div><div class="s-bar"></div>`;
     }
   }
-  setPage((v==="A"?"t-foto":"t-sem")+(letter?" is-letter":""),html);
+  setPage("t-sem"+(v==="A"?" has-foto":"")+(letter?" is-letter":""),html);
 }
 
 /* ---------------- PAGE FIT (auto-scale to <=3 A4 pages, then fit to mobile width) ---------------- */

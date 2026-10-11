@@ -314,3 +314,16 @@ body.is-app .social-btn svg{width:26px;height:26px}
 body.is-app .pg-ico.pg-brand{background:#fff !important;background-image:none !important;border:1.5px solid var(--ap-gold) !important}
 .pg-ico.pg-brand svg{width:24px;height:24px}
 .pg-ico.pg-brand svg{stroke:none}
+
+/* ===== Modelo Executivo (A) ===== */
+/* Carta: barra do tamanho da foto, foto grande quadrada com cantos arredondados, nome e profissão centrados */
+.cv-page .lf-band{padding:4mm 14mm;gap:8mm;align-items:center}
+.cv-page .lf-band .d-photo{width:42mm;height:42mm;border-radius:5mm;flex:0 0 auto;margin:0}
+.cv-page .lf-band > div:last-child{flex:1 1 auto;min-width:0;text-align:center}
+.cv-page .lf-band .d-name,.cv-page .lf-band .d-role{text-align:center}
+
+/* CV: layout tradicional + foto quadrada (cantos arredondados) ao lado, sem barra escura */
+.cv-page .s-head.has-ph{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:42mm;padding:4mm 58mm 0;text-align:center}
+.cv-page .s-head.has-ph .d-rule{margin:3.5mm auto 5mm}
+.cv-page .hp-photo{position:absolute;left:20mm;top:4mm;width:36mm;height:36mm;border-radius:5mm;object-fit:cover;display:block;border:.7mm solid var(--a);background:#fff;box-sizing:border-box}
+.cv-page .hp-photo.ph-sec{display:flex;align-items:center;justify-content:center;font-size:11pt;font-style:italic;color:#8a94a6}
