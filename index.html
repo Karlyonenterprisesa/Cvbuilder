@@ -1419,7 +1419,7 @@ function buildActiveDoc(){
 
 function formatPeriod(inicio, fim){
   if(inicio && fim) return `${esc(inicio)} - ${esc(fim)}`;
-  if(inicio) return `${esc(inicio)} - Presente`;
+  if(inicio) return `${esc(inicio)} - ${EN()?"Present":"Presente"}`;
   if(fim) return esc(fim);
   return "";
 }
@@ -1555,6 +1555,7 @@ function formatPtDate(iso){
   const parts = iso.split("-").map(Number);
   const y=parts[0], m=parts[1], d=parts[2];
   if(!y||!m||!d) return "";
+  if(EN()) return `${d} ${["January","February","March","April","May","June","July","August","September","October","November","December"][m-1]} ${y}`;
   return `${String(d).padStart(2,"0")} de ${PT_MONTHS[m-1]} de ${y}`;
 }
 
@@ -1670,25 +1671,28 @@ document.addEventListener("click",ev=>{
     buildActiveDoc();
   } else render();
 });
+const tx=s=>(window.CVX&&CVX.tr)?CVX.tr(s):s;
+const EN=()=>!!(window.CVX&&CVX.lang&&CVX.lang()==="en");
+document.addEventListener("cvx:tr",()=>{ if(typeof currentView!=="undefined"&&currentView==="preview") buildActiveDoc(); });
 function cvBlocks(){
   const sub=e=>(e.instituicao||"")+(e.local?(", "+e.local):"");
   return [
-    ["Formação Académica",state.education,e=>({title:e.curso,period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
-    ["Certificações",state.certifications,e=>({title:e.nome,period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
-    ["Experiência Profissional",state.experience,e=>({title:e.cargo,period:formatPeriod(e.anoInicio,e.anoFim),sub:sub(e)+(e.tipoContrato?" · "+e.tipoContrato:""),desc:e.descricao,logo:e.logo})]
+    ["Formação Académica",state.education,e=>({title:tx(e.curso),period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
+    ["Certificações",state.certifications,e=>({title:tx(e.nome),period:esc(e.ano),sub:sub(e),desc:e.descricao,logo:e.logo})],
+    ["Experiência Profissional",state.experience,e=>({title:tx(e.cargo),period:formatPeriod(e.anoInicio,e.anoFim),sub:sub(e)+(e.tipoContrato?" · "+tx(e.tipoContrato):""),desc:e.descricao,logo:e.logo})]
   ];
 }
 function ulHtml(d,cls){
   if(!d) return "";
   const l=d.split(/\n/).map(t=>t.trim()).filter(Boolean);
-  return l.length?`<div class="${cls}">${l.map(x=>`<p>${esc(x)}</p>`).join("")}</div>`:"";
+  return l.length?`<div class="${cls}">${l.map(x=>`<p>${esc(tx(x))}</p>`).join("")}</div>`:"";
 }
 const PERSONAL_FIELDS=[["pin","Residência","localizacao"],["phone","Telefone","telefone"],["mail","E-mail","email"],["link","LinkedIn / Website","linkedin"],["cake","Data de Nascimento","dataNascimento"],["globe","Nacionalidade","nacionalidade"]];
 function phoneText(p){ return [p.telefone,p.telefone2].map(x=>(x||"").trim()).filter(Boolean).join("  |  "); }
 function personalItems(){
   const p=state.personal;
   return PERSONAL_FIELDS.map(([i,lab,k])=>{
-    const v=(k==="telefone"?phoneText(p):(p[k]||"")).trim();
+    const v=(k==="telefone"?phoneText(p):(k==="nacionalidade"?tx(p[k]||""):(p[k]||""))).trim();
     if(!v) return [i,lab,false];
     return [i,k==="dataNascimento"?(formatPtDate(v)||v):v,true];
   });
@@ -1705,10 +1709,10 @@ function letterCore(toWord){
   const c=state.coverLetter, p=state.personal;
   const cd=[c.cidade,formatPtDate(c.data)].filter(Boolean).join(", ");
   const to=[c.destinatarioEmpresa,c.destinatarioDepartamento].filter(Boolean);
-  let h=`<div class="l-meta"><div>${cd?esc(cd):'<span class="ph">Cidade, data</span>'}</div><div>${toWord}</div><div class="strong">${c.destinatarioDepartamento?esc(c.destinatarioDepartamento):'<span class="ph">Departamento destinatário</span>'}</div><div>${c.destinatarioEmpresa?esc(c.destinatarioEmpresa):'<span class="ph">Empresa / Instituição destinatária</span>'}</div></div>`;
-  h+=`<div class="l-subj">Assunto: ${c.assunto?esc(c.assunto):'<span class="ph">Indique o assunto da carta</span>'}</div>`;
+  let h=`<div class="l-meta"><div>${cd?esc(cd):'<span class="ph">Cidade, data</span>'}</div><div>${toWord}</div><div class="strong">${c.destinatarioDepartamento?esc(tx(c.destinatarioDepartamento)):'<span class="ph">Departamento destinatário</span>'}</div><div>${c.destinatarioEmpresa?esc(c.destinatarioEmpresa):'<span class="ph">Empresa / Instituição destinatária</span>'}</div></div>`;
+  h+=`<div class="l-subj">${EN()?"Subject":"Assunto"}: ${c.assunto?esc(tx(c.assunto)):'<span class="ph">Indique o assunto da carta</span>'}</div>`;
   h+=`<div class="l-greet">Prezados Senhores,</div>`;
-  if(c.corpo&&c.corpo.trim()) c.corpo.split(/\n\s*\n/).map(t=>t.trim()).filter(Boolean).forEach(t=>{h+=`<p>${esc(t).replace(/\n/g,"<br>")}</p>`;});
+  if(c.corpo&&c.corpo.trim()) c.corpo.split(/\n\s*\n/).map(t=>t.trim()).filter(Boolean).forEach(t=>{h+=`<p>${esc(tx(t)).replace(/\n/g,"<br>")}</p>`;});
   if(!(c.corpo&&c.corpo.trim())) h+=`<p class="ph">Escreva aqui o corpo da carta: motivação, experiência e o que pode contribuir.</p>`;
   h+=`<div class="l-close">Com os melhores cumprimentos,</div>`;
   h+=`<div class="l-name">${p.nome?esc(p.nome):'<span class="ph">Seu Nome Completo</span>'}</div>`;
@@ -1723,7 +1727,7 @@ function setPage(cls,html){
 function buildDoc(letter){
   const v=curVer(), p=state.personal;
   const nameH=p.nome&&p.nome.trim()?esc(p.nome.trim()):'<span class="ph">Seu Nome Completo</span>';
-  const roleH=p.profissao?esc(p.profissao):'<span class="ph">Profissão</span>';
+  const roleH=p.profissao?esc(tx(p.profissao)):'<span class="ph">Profissão</span>';
   const ci=contactItems(), none=!ci.length, cl=none?PH_CONTACTS:ci;
   const pi=personalItems(), noneP=!pi.some(x=>x[2]);
   const photo=cls=>p.foto?`<img class="${cls}" src="${p.foto}" alt="Fotografia">`:`<div class="${cls} ph-sec">Foto</div>`;
@@ -1738,23 +1742,23 @@ function buildDoc(letter){
     const inner=`<div class="en-row"><span class="en-t">${esc(e.title||"")}</span>${e.period?`<span class="en-y">${e.period}</span>`:""}</div>${sb?`<div class="en-s">${esc(sb)}</div>`:""}${ulHtml(e.desc,"en-d")}`;
     return lg?`<div class="en has-logo">${lg}<div class="en-main">${inner}</div></div>`:`<div class="en">${inner}</div>`;}).join("");
   const head=`<div class="d-name">${nameH}</div><div class="d-role">${roleH}</div><div class="d-rule"></div>`;
-  const refs=state.references.length?state.references.map(r=>`<div class="en"><div class="en-t">${esc(r.nome)}</div><div class="en-s">${esc([r.cargo,r.contacto].filter(Boolean).join(" | "))}</div></div>`).join(""):"";
+  const refs=state.references.length?state.references.map(r=>`<div class="en"><div class="en-t">${esc(r.nome)}</div><div class="en-s">${esc([tx(r.cargo),r.contacto].filter(Boolean).join(" | "))}</div></div>`).join(""):"";
   const pfg={}; (state.portfolio||[]).forEach(p=>{ if(!(p.nome||"").trim()&&!(p.contacto||"").trim()) return; const k=(p.cargo||"").trim()||"Outros"; (pfg[k]=pfg[k]||[]).push(p); });
-  const pf=Object.keys(pfg).map(k=>`<div class="en"><div class="en-t">${esc(k)}</div><div class="en-d">${pfg[k].map(p=>`<p>${esc(p.nome||"")}${p.contacto?`${p.nome?" — ":""}<span class="pf-u">${esc(p.contacto.replace(/^https?:\/\//,""))}</span>`:""}</p>`).join("")}</div></div>`).join("");
+  const pf=Object.keys(pfg).map(k=>`<div class="en"><div class="en-t">${esc(tx(k))}</div><div class="en-d">${pfg[k].map(p=>`<p>${esc(p.nome||"")}${p.contacto?`${p.nome?" — ":""}<span class="pf-u">${esc(p.contacto.replace(/^https?:\/\//,""))}</span>`:""}</p>`).join("")}</div></div>`).join("");
   const main=()=>{
-    let h=sec("Perfil Profissional",state.profile?`<p>${esc(state.profile)}</p>`:"");
+    let h=sec("Perfil Profissional",state.profile?`<p>${esc(tx(state.profile))}</p>`:"");
     cvBlocks().forEach(([t,items,fn])=>{h+=sec(t,entries(items,fn));});
     return h;
   };
   let html;
   {
     if(letter){
-      html=`${v==="A"?headA:headC}<div class="l-wrap">${letterCore("Ao")}</div>${foot()}`;
+      html=`${v==="A"?headA:headC}<div class="l-wrap">${letterCore(EN()?"To":"Ao")}</div>${foot()}`;
     } else {
       const chips=a=>a.length?`<div class="chips">${a.join("")}</div>`:"";
       const mk=a=>a.length?`<div class="mk-list">${a.map(x=>`<div class="f-row ${x[0]}"><span>${x[1]}</span></div>`).join("")}</div>`:"";
       const dp=`<div class="sec sec-dp${noneP?' ph-sec':''}"><div class="sec-h">Dados Pessoais</div><div class="dp">${pi.map(x=>`<span class="ct${x[2]?'':' ph'}">${ico(x[0])}${esc(x[1])}</span>`).join("")}</div></div>`;
-      html=`${v==="A"?headA:headC}<div class="s-body">${dp}${main()}${sec("Habilidades",mk(state.skills.map(k=>["f-sk",esc(k.nome)])))}${sec("Idiomas",mk(state.languages.map(l=>["f-lg",esc(l.idioma)+" — <b>"+esc(lvlT(l.nivel))+"</b>"])))}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div><div class="s-bar"></div>`;
+      html=`${v==="A"?headA:headC}<div class="s-body">${dp}${main()}${sec("Habilidades",mk(state.skills.map(k=>["f-sk",esc(tx(k.nome))])))}${sec("Idiomas",mk(state.languages.map(l=>["f-lg",esc(tx(l.idioma))+" — <b>"+esc(lvlT(l.nivel))+"</b>"])))}${pf?sec("Portfólio",pf):""}${sec("Referências",refs)}</div><div class="s-bar"></div>`;
     }
   }
   setPage("t-sem"+(v==="A"?" has-foto":"")+(letter?" is-letter":""),html);
@@ -1860,6 +1864,7 @@ function cvCode(){
 }
 window.cvCode=cvCode;
 function savePdf(){
+  if(window.CVX&&CVX.busy&&CVX.busy()){ toast("A traduzir o documento…"); CVX.wait(()=>setTimeout(savePdf,250)); return; }
   const docLabel = previewMode==="letter" ? "Carta_de_Apresentacao" : "Curriculo_Vitae";
   const nome = (state.personal.nome||"Documento").trim().replace(/\s+/g,"_") || "Documento";
   const prevTitle = document.title;

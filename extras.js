@@ -5,12 +5,87 @@
   var lang = "pt"; try { var _v = localStorage.getItem(KEY); if (_v === null) { _v = localStorage.getItem("advision_lang"); if (_v !== null) { localStorage.setItem(KEY, _v); localStorage.removeItem("advision_lang"); } } lang = _v === "en" ? "en" : "pt"; } catch (e) {}
   var store = new WeakMap(), SKIP = /^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/;
   var norm = function (s) { return s.replace(/\s+/g, " ").trim(); };
+  /* ---- Tradução automática PT → EN do conteúdo (texto escrito pelo utilizador e restante plataforma) ---- */
+  var TKEY = "adv_tr_en_v1", tcache = {}, tfail = {}, tq = [], tqs = {}, tbusy = false, twait = [], tTimer = null, warned = false;
+  try { tcache = JSON.parse(localStorage.getItem(TKEY) || "{}") || {}; } catch (e) {}
+  function tsave() {
+    try {
+      var s = JSON.stringify(tcache);
+      while (s.length > 250000) { var ks = Object.keys(tcache); if (ks.length < 20) break; ks.slice(0, Math.ceil(ks.length / 4)).forEach(function (k) { delete tcache[k]; }); s = JSON.stringify(tcache); }
+      localStorage.setItem(TKEY, s);
+    } catch (e) {}
+  }
+  var NOTR = /^[\d\s\-–—.,:;\/+()%@#&*_|•·€$]*$/;
+  function needs(k) { return k && k.length > 1 && !NOTR.test(k) && !/^(https?:\/\/|www\.)\S+$/i.test(k) && !/^\S+@\S+\.\S+$/.test(k); }
+  function trKey(k) {
+    if (D[k]) return D[k];
+    if (!needs(k)) return null;
+    if (tcache[k] !== undefined) return tcache[k];
+    if (!tfail[k] && !tqs[k]) { tqs[k] = 1; tq.push(k); tsched(); }
+    return null;
+  }
+  function trStr(s) {
+    if (lang !== "en" || !s) return s;
+    if (s.indexOf("\n") > -1) return s.split("\n").map(trStr).join("\n");
+    var lead = s.match(/^\s*/)[0], trail = s.match(/\s*$/)[0], k = norm(s);
+    var t = k ? trKey(k) : null;
+    return t ? lead + t + trail : s;
+  }
+  function tsched() { if (tTimer) return; tTimer = setTimeout(function () { tTimer = null; trun(); }, 120); }
+  function trun() {
+    if (tbusy || !tq.length) return;
+    tbusy = true;
+    var batch = [], len = 0;
+    while (tq.length && batch.length < 30 && len < 2500) { var k = tq.shift(); batch.push(k); len += k.length; }
+    translate(batch).then(function (out) {
+      batch.forEach(function (k, i) { delete tqs[k]; if (out && out[i]) tcache[k] = out[i]; else tfail[k] = 1; });
+      tsave();
+    }, function () {
+      batch.forEach(function (k) { delete tqs[k]; tfail[k] = 1; }); twarn();
+    }).then(function () {
+      tbusy = false;
+      if (tq.length) trun(); else tdone();
+    });
+  }
+  function tdone() {
+    walk(document.body);
+    try { document.dispatchEvent(new Event("cvx:tr")); } catch (e) {}
+    var w = twait; twait = []; w.forEach(function (f) { try { f(); } catch (e) {} });
+  }
+  function twarn() { if (!warned && typeof window.toast === "function") { warned = true; try { window.toast("Não foi possível traduzir: verifique a ligação à Internet."); } catch (e) {} } }
+  function translate(units) { return post(units).catch(function () { return direct(units); }); }
+  function post(units) {
+    return fetch("/api/traduzir", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texts: units }) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { if (!j || !Array.isArray(j.out) || j.out.length !== units.length) throw 0; return j.out; });
+  }
+  function gtx(q) {
+    return fetch("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" + encodeURIComponent(q))
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { var t = (j[0] || []).map(function (x) { return x[0]; }).join(""); if (!t) throw 0; return t; });
+  }
+  function mm(q) {
+    if (q.length > 480) return Promise.reject(0);
+    return fetch("https://api.mymemory.translated.net/get?langpair=pt|en&q=" + encodeURIComponent(q))
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { var t = j && j.responseData && j.responseData.translatedText; if (!t || j.responseStatus != 200 || /MYMEMORY WARNING/i.test(t)) throw 0; return t; });
+  }
+  function direct(units) {
+    var out = new Array(units.length), i = 0, ok = 0;
+    function worker() {
+      if (i >= units.length) return Promise.resolve();
+      var n = i++;
+      return gtx(units[n]).catch(function () { return mm(units[n]); }).then(function (t) { out[n] = t; ok++; }, function () {}).then(worker);
+    }
+    return Promise.all([worker(), worker(), worker(), worker()]).then(function () { if (!ok) throw 0; return out; });
+  }
+  function skipMT(n) { var el = n.parentNode; return !el || !el.closest || !!el.closest(".cv-page,[translate=no],.notranslate,.lang-sw"); }
   function trText(n) {
     var v = n.nodeValue, rec = store.get(n);
     if (rec && v !== rec.tr && v !== rec.orig) rec = null;
     var orig = rec ? rec.orig : v, key = norm(orig);
     if (!key) return;
-    var t = lang === "en" ? (D[key] || (/^\d+ \/ \d+ páginas$/.test(key) ? key.replace("páginas", "pages") : null)) : null;
+    var t = lang === "en" ? (D[key] || (/^\d+ \/ \d+ páginas$/.test(key) ? key.replace("páginas", "pages") : null) || (skipMT(n) ? null : trKey(key))) : null;
     if (t) {
       var out = orig.match(/^\s*/)[0] + t + orig.match(/\s*$/)[0];
       if (v !== out) n.nodeValue = out;
@@ -39,10 +114,10 @@
     trAttrs(root);
     root.querySelectorAll("[placeholder],[title],[aria-label],[alt]").forEach(trAttrs);
   }
-  window.CVX = { lang: function () { return lang; }, lvl: function (n) { return lang === "en" && LV[n] ? LV[n] : n; } };
+  window.CVX = { tr: trStr, busy: function () { return tbusy || tq.length > 0; }, wait: function (f) { if (tbusy || tq.length) twait.push(f); else f(); }, lang: function () { return lang; }, lvl: function (n) { return lang === "en" && LV[n] ? LV[n] : n; } };
 
   function setLang(l) {
-    lang = l; try { localStorage.setItem(KEY, l); } catch (e) {}
+    lang = l; tfail = {}; warned = false; try { localStorage.setItem(KEY, l); } catch (e) {}
     document.documentElement.lang = l === "en" ? "en" : "pt-MZ";
     walk(document.body); sw();
     document.querySelectorAll(".lang-sw").forEach(lab);
