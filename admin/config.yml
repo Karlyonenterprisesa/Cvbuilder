@@ -1,4 +1,4 @@
-# Advision CV Builder — Decap CMS com login GitHub (OAuth via /api/auth e /api/callback na Vercel)
+# Adivision CV Builder — Decap CMS com login GitHub (OAuth via /api/auth e /api/callback na Vercel)
 # Repositório: Karlyonenterprisesa/Cvbuilder  ·  Site: https://adivisioncvbuilder.vercel.app
 # Necessita na Vercel: GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET (ver /api/diagnostico)
 # Cópia do login DecapBridge: admin/config.decapbridge.backup.yml
@@ -42,7 +42,7 @@ collections:
         label: "Logótipo da Empresa"
         widget: "image"
         required: false
-        hint: "Opcional. Se não for enviada, o site usa a imagem por defeito do Advision CV Builder."
+        hint: "Opcional. Se não for enviada, o site usa a imagem por defeito do Adivision CV Builder."
 
       - { name: "local", label: "Local da Vaga", widget: "string", required: true, hint: "Ex: Beira, Sofala" }
 

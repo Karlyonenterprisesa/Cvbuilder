@@ -1,4 +1,4 @@
-# Advision CV Builder — Decap CMS com DecapBridge (login por e-mail, PKCE)
+# Adivision CV Builder — Decap CMS com DecapBridge (login por e-mail, PKCE)
 # Repositório: Karlyonenterprisesa/Cvbuilder  ·  Site: https://adivisioncvbuilder.vercel.app
 # IMPORTANTE: o site da DecapBridge (IDs em auth_endpoint / auth_token_endpoint) tem de estar
 # registado para ESTE repositório. Se criar um site novo na DecapBridge, substitua os 2 IDs abaixo.

@@ -1,4 +1,4 @@
-/* Advision CV Builder — consentimento de cookies, Google Consent Mode v2, Analytics e AdSense.
+/* Adivision CV Builder — consentimento de cookies, Google Consent Mode v2, Analytics e AdSense.
    - GA_ID: preencha com o ID do Google Analytics 4 (ex.: "G-XXXXXXXXXX").
    - AD_SLOT: opcional. ID de um bloco de anúncios criado no AdSense (só números).
      Se ficar vazio, o AdSense usa os "Anúncios automáticos" (se activados na sua conta).
@@ -10,7 +10,7 @@
     GA_ID: "",
     AD_SLOT: ""
   };
-  var KEY = "advision_consent_v1";
+  var KEY = "adivision_consent_v1";
   var body = function () { return document.body; };
   var adsPage = function () { return body() && body().getAttribute("data-ads") === "on"; };
   var needs = !!(CFG.ADSENSE_CLIENT || CFG.GA_ID);
@@ -20,7 +20,7 @@
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
   window.gtag("consent", "default", { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied", wait_for_update: 500 });
 
-  function get() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function get() { try { var v = localStorage.getItem(KEY); if (v === null) { var o = localStorage.getItem("advision_consent_v1"); if (o !== null) { localStorage.setItem(KEY, o); localStorage.removeItem("advision_consent_v1"); v = o; } } return v; } catch (e) { return null; } }
   function set(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
   function load(src, attrs) {
     if (document.querySelector('script[src="' + src + '"]')) return;

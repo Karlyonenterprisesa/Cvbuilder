@@ -1,14 +1,14 @@
-/* Advision CV Builder — PWA: registo do service worker e botão flutuante «Instalar app».
+/* Adivision CV Builder — PWA: registo do service worker e botão flutuante «Instalar app».
    Regras: 1.ª vez após 3 min no site; fica visível 10 s; volta a cada 10 min. Nunca aparece se a app já estiver instalada. */
 (function () {
   "use strict";
   var FIRST = 3 * 60 * 1000, SHOW = 10 * 1000, EVERY = 10 * 60 * 1000;
-  var K_FIRST = "advision_pwa_first", K_LAST = "advision_pwa_last", K_DONE = "advision_pwa_done";
+  var K_FIRST = "adivision_pwa_first", K_LAST = "adivision_pwa_last", K_DONE = "adivision_pwa_done";
   var deferred = null, timer = null, hideT = null;
   var ua = navigator.userAgent || "";
   var isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
-  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
+  function ls(k, v) { try { if (v === undefined) { var r = localStorage.getItem(k); if (r === null) { var o = localStorage.getItem(k.replace("adivision_", "advision_")); if (o !== null) { localStorage.setItem(k, o); r = o; } } return r; } localStorage.setItem(k, v); } catch (e) {} return null; }
   function standalone() {
     return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
   }
