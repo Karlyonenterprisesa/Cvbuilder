@@ -39,10 +39,10 @@ collections:
       - { name: "empresa", label: "Nome da Empresa", widget: "string", required: true }
 
       - name: "imagem_empresa"
-        label: "Logótipo da Empresa"
+        label: "Imagem da Vaga / Logótipo (pré-visualização ao partilhar)"
         widget: "image"
         required: false
-        hint: "Opcional. Se não for enviada, o site usa a imagem por defeito do Adivision CV Builder."
+        hint: "Esta imagem aparece quando a vaga é partilhada no Facebook/WhatsApp. Ideal: 1200×630 px. Se não for enviada, usa a imagem geral do site."
 
       - { name: "local", label: "Local da Vaga", widget: "string", required: true, hint: "Ex: Beira, Sofala" }
 
@@ -87,6 +87,12 @@ collections:
           - "Saúde"
           - "Vendas e Marketing"
           - "Outra"
+
+      - name: "meta_descricao"
+        label: "Meta descrição (resumo ao partilhar / Google)"
+        widget: "text"
+        required: false
+        hint: "Até ~155 caracteres. Se vazio, o site gera automaticamente com resumo, local e prazo."
 
       - name: "palavras_chave"
         label: "Palavras-chave (SEO)"

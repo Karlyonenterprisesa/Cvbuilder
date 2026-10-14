@@ -62,7 +62,7 @@ collections:
       - { name: "empresa", label: "Nome da Empresa", widget: "string", required: true }
 
       - name: "imagem_empresa"
-        label: "Logótipo da Empresa"
+        label: "Imagem da Vaga / Logótipo (pré-visualização ao partilhar)"
         widget: "image"
         required: false
         hint: "Opcional. Se não for enviada, o site usa o logótipo da Alcartel como imagem por defeito."
@@ -114,6 +114,12 @@ collections:
           - "Saúde"
           - "Vendas e Marketing"
           - "Outra"
+
+      - name: "meta_descricao"
+        label: "Meta descrição (resumo ao partilhar / Google)"
+        widget: "text"
+        required: false
+        hint: "Até ~155 caracteres. Se vazio, o site gera automaticamente com resumo, local e prazo."
 
       - name: "palavras_chave"
         label: "Palavras-chave (SEO)"

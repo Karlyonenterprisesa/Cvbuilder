@@ -235,8 +235,8 @@ body{zoom:var(--z)}
 .cv-page.fit .sec-h,.cv-page.fit .en-t{font-size:calc(12pt * var(--f,1))}
 @media print{.cv-page .pg{margin:0;box-shadow:none;break-after:page;page-break-after:always;height:296.5mm}.cv-page .pg:last-child{break-after:auto;page-break-after:auto}}
 </style>
-<link rel="stylesheet" href="/extras.css?v=36">
-<script src="/extras.js?v=36" defer></script>
+<link rel="stylesheet" href="/extras.css?v=38">
+<script src="/extras.js?v=38" defer></script>
 </head>
 <body>
 
@@ -1183,7 +1183,7 @@ function bindReferences(){
 
 function renderPortfolioEditor(){
   const items = state.portfolio;
-  let html = `<div class="section-sub">Secção opcional — adicione links dos seus trabalhos e sites. Aparecem no CV agrupados por categoria.</div><div class="entry-list">`;
+  let html = `<div class="section-sub">Secção opcional — adicione links dos seus trabalhos e sites, com imagem e descrição curta. No CV, o link fica escondido atrás de um botão clicável (funciona também no PDF). Pode ainda mostrar o link escrito, para quem imprime o CV.</div><div class="entry-list">`;
   if(items.length===0) html += `<div class="empty-note">Nenhum link adicionado.</div>`;
   items.forEach(r=>{
     html += `
@@ -1202,9 +1202,20 @@ function renderPortfolioEditor(){
   html += `<div class="entry-form ${isOpen?'open':''}">`;
   if(isOpen){
     html += `
-    <div class="field"><label>Título do trabalho</label><input type="text" id="ff_portfolio_nome" value="${esc(editing?editing.nome:'')}"></div>
+    <div class="field"><label>Título do trabalho</label><input type="text" id="ff_portfolio_nome" placeholder="Ex: Meu site profissional" value="${esc(editing?editing.nome:'')}"></div>
+    <div class="field"><label>Link (https://...) — fica escondido atrás do botão</label><input type="text" id="ff_portfolio_contacto" placeholder="https://..." value="${esc(editing?editing.contacto:'')}"></div>
+    <div class="field"><label>Texto do botão clicável</label><input type="text" id="ff_portfolio_btn" maxlength="30" placeholder="Ver portfólio" value="${esc(editing&&editing.btn?editing.btn:'')}"></div>
+    <div class="field"><label style="display:flex;align-items:center;gap:8px;font-weight:600"><input type="checkbox" id="ff_portfolio_showurl" ${editing&&editing.showUrl?'checked':''}> Mostrar também o link escrito (para CV impresso)</label></div>
+    <div class="field"><label>Descrição curta (opcional)</label><input type="text" id="ff_portfolio_desc" maxlength="140" placeholder="Ex: Site de enfermagem com artigos e cursos" value="${esc(editing&&editing.desc?editing.desc:'')}"></div>
     <div class="field"><label>Categoria (ex: Website, Artigo, Projecto)</label><input type="text" id="ff_portfolio_cargo" value="${esc(editing?editing.cargo:'')}"></div>
-    <div class="field"><label>Link (https://...)</label><input type="text" id="ff_portfolio_contacto" value="${esc(editing?editing.contacto:'')}"></div>
+    <div class="field"><label>Imagem ou ícone (opcional)</label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo-preview${editing&&editing.img?'':' empty'}" id="pfImgPrev" style="${editing&&editing.img?`background-image:url('${editing.img}')`:''}">${editing&&editing.img?'':'Img'}</div>
+        <label class="btn btn-sm file-label" for="ff_portfolio_img">Escolher imagem</label>
+        <input type="file" id="ff_portfolio_img" accept="image/*" style="display:none">
+        <button type="button" class="btn btn-sm btn-ghost" id="pfImgRem" style="${editing&&editing.img?'':'display:none'}">Remover</button>
+      </div>
+    </div>
     <div class="form-actions">
       <button class="btn btn-ghost" data-cancelform="portfolio">Cancelar</button>
       <button class="btn btn-primary" data-saveform="portfolio" data-id="${editing?editing.id:''}">Guardar</button>
@@ -1360,7 +1371,18 @@ function bindLanguages(){
   });
 }
 
+function pfResize(file, cb){
+  const rd=new FileReader(); rd.onerror=()=>toast("Não foi possível ler o ficheiro.");
+  rd.onload=()=>{ const im=new Image(); im.onload=()=>{ const M=240,k=Math.min(1,M/Math.max(im.width,im.height)); const c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); const x=c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(im,0,0,c.width,c.height); cb(c.toDataURL("image/jpeg",0.85)); }; im.onerror=()=>toast("Imagem inválida."); im.src=rd.result; };
+  rd.readAsDataURL(file);
+}
+function pfUrl(u){ u=(u||"").trim(); if(!u) return ""; if(/^(mailto:|tel:)/i.test(u)) return u; if(!/^https?:\/\//i.test(u)) u="https://"+u; return /^https?:\/\/[^\s]+\.[^\s]+/i.test(u)?u:""; }
+let _pfImg=null;
 function bindPortfolio(){
+  { const _ed=openForm&&openForm.section==="portfolio"?state.portfolio.find(i=>i.id===openForm.id):null; _pfImg=_ed?(_ed.img||""):""; }
+  const _fi=document.getElementById("ff_portfolio_img"), _pv=document.getElementById("pfImgPrev"), _rm=document.getElementById("pfImgRem");
+  if(_fi) _fi.addEventListener("change",()=>{ const f=_fi.files&&_fi.files[0]; if(!f) return; pfResize(f,b=>{ _pfImg=b; _pv.style.backgroundImage=`url('${b}')`; _pv.textContent=""; _pv.classList.remove("empty"); _rm.style.display=""; }); });
+  if(_rm) _rm.addEventListener("click",()=>{ _pfImg=""; _pv.style.backgroundImage=""; _pv.textContent="Img"; _pv.classList.add("empty"); _rm.style.display="none"; });
   document.querySelectorAll('[data-addform="portfolio"]').forEach(btn=>btn.addEventListener("click", ()=>{ openForm={section:"portfolio",id:null}; refreshEditorInner(); }));
   document.querySelectorAll('[data-edit^="portfolio:"]').forEach(btn=>btn.addEventListener("click", ()=>{ openForm={section:"portfolio",id:btn.dataset.edit.split(":")[1]}; refreshEditorInner(); }));
   document.querySelectorAll('[data-del^="portfolio:"]').forEach(btn=>btn.addEventListener("click", ()=>{
@@ -1377,6 +1399,10 @@ function bindPortfolio(){
       entry.nome = document.getElementById("ff_portfolio_nome").value;
       entry.cargo = document.getElementById("ff_portfolio_cargo").value;
       entry.contacto = document.getElementById("ff_portfolio_contacto").value;
+      entry.desc = document.getElementById("ff_portfolio_desc").value;
+      entry.btn = document.getElementById("ff_portfolio_btn").value;
+      entry.showUrl = document.getElementById("ff_portfolio_showurl").checked;
+      entry.img = _pfImg||"";
       if(!id) state.portfolio.push(entry);
       openForm=null; saveState(); refreshEditorInner();
     });
@@ -1744,7 +1770,12 @@ function buildDoc(letter){
   const head=`<div class="d-name">${nameH}</div><div class="d-role">${roleH}</div><div class="d-rule"></div>`;
   const refs=state.references.length?state.references.map(r=>`<div class="en"><div class="en-t">${esc(r.nome)}</div><div class="en-s">${esc([tx(r.cargo),r.contacto].filter(Boolean).join(" | "))}</div></div>`).join(""):"";
   const pfg={}; (state.portfolio||[]).forEach(p=>{ if(!(p.nome||"").trim()&&!(p.contacto||"").trim()) return; const k=(p.cargo||"").trim()||"Outros"; (pfg[k]=pfg[k]||[]).push(p); });
-  const pf=Object.keys(pfg).map(k=>`<div class="en"><div class="en-t">${esc(tx(k))}</div><div class="en-d">${pfg[k].map(p=>`<p>${esc(p.nome||"")}${p.contacto?`${p.nome?" — ":""}<span class="pf-u">${esc(p.contacto.replace(/^https?:\/\//,""))}</span>`:""}</p>`).join("")}</div></div>`).join("");
+  const pfRow=p=>{ const u=pfUrl(p.contacto), t=(p.nome||"").trim(), im=p.img?`<img class="pf-img" src="${p.img}" alt="">`:"";
+    const lbl=(p.btn||"").trim()||"Ver portfólio";
+    const btn=u?`<a class="pf-btn" href="${esc(u)}" target="_blank" rel="noopener">${esc(tx(lbl))} ↗</a>`:"";
+    const shown=u&&p.showUrl?`<div class="pf-url">${esc(u.replace(/^https?:\/\//,"").replace(/\/$/,""))}</div>`:"";
+    return `<div class="pf-row${im?' has-img':''}">${im}<div class="pf-main">${t?`<div class="pf-t">${esc(t)}</div>`:""}${p.desc&&p.desc.trim()?`<div class="pf-d">${esc(p.desc.trim())}</div>`:""}${btn?`<div class="pf-act">${btn}</div>`:""}${shown}</div></div>`; };
+  const pf=Object.keys(pfg).map(k=>`<div class="en"><div class="en-t">${esc(tx(k))}</div><div class="en-d">${pfg[k].map(pfRow).join("")}</div></div>`).join("");
   const main=()=>{
     let h=sec("Perfil Profissional",state.profile?`<p>${esc(tx(state.profile))}</p>`:"");
     cvBlocks().forEach(([t,items,fn])=>{h+=sec(t,entries(items,fn));});

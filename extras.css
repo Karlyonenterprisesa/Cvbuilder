@@ -355,3 +355,21 @@ body.is-app .pg-ico.pg-brand{background:#fff !important;background-image:none !i
 .cv-page .lf-band{padding:4mm 14mm;gap:6mm}
 /* nome + profissão sempre em blocos próprios (div) por baixo da foto/ao lado */
 .cv-page .s-head .d-name,.cv-page .s-head .d-role{display:block}
+
+
+/* ===== v37: portfólio com imagem/ícone, descrição curta e título clicável (funciona no PDF) ===== */
+.cv-page .pf-row{display:flex;align-items:flex-start;gap:3mm;margin:0 0 2.2mm;padding:0;text-align:left}
+.cv-page .pf-img{width:11mm;height:11mm;flex:0 0 11mm;object-fit:cover;border-radius:1.5mm;border:.25mm solid #d5dbe6;background:#fff}
+.cv-page .pf-main{flex:1 1 auto;min-width:0}
+.cv-page .pf-a{color:var(--a);font-weight:700;text-decoration:underline;text-underline-offset:.5mm;word-break:break-word}
+.cv-page .pf-t{font-weight:700}
+.cv-page .pf-hint{font-size:8.5pt;font-style:italic;color:#6b7589;white-space:nowrap}
+.cv-page .pf-d{font-size:9.5pt;color:#444;margin-top:.5mm;text-align:left}
+.cv-page .en-d .pf-row::before{content:none}
+
+
+/* ===== v38: botão clicável que mascara o link + link escrito opcional ===== */
+.cv-page .pf-act{margin-top:1.2mm}
+.cv-page .pf-btn{display:inline-block;background:var(--a);color:#fff !important;font-weight:700;font-size:9pt;text-decoration:none !important;padding:1mm 3.2mm;border-radius:5mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cv-page .pf-url{font-size:8.5pt;color:#444;margin-top:1mm;word-break:break-all;text-align:left}
+.cv-page .pf-hint,.cv-page .pf-a{display:none}
