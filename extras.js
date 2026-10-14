@@ -94,7 +94,7 @@
     if (rec && v !== rec.tr && v !== rec.orig) rec = null;
     var orig = rec ? rec.orig : v, key = norm(orig);
     if (!key) return;
-    var t = lang === "en" ? (D[key] || (/^\d+ \/ \d+ páginas$/.test(key) ? key.replace("páginas", "pages") : null) || (skipMT(n) ? null : trKey(key))) : null;
+    var t = lang === "en" ? (D[key] || (/^\d+ páginas?$/.test(key) ? key.replace("páginas", "pages").replace("página", "page") : null) || (skipMT(n) ? null : trKey(key))) : null;
     if (t) {
       var out = orig.match(/^\s*/)[0] + t + orig.match(/\s*$/)[0];
       if (v !== out) n.nodeValue = out;

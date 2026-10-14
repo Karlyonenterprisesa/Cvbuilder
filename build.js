@@ -36,6 +36,46 @@ function normaliza(v) {
   if (c && typeof c === "object") { if (c.link && !v.link_candidatura) v.link_candidatura = c.link; if (c.email) v.email_candidatura = c.email; }
   return v;
 }
+
+/* ---- Imagem de pré-visualização (Facebook/WhatsApp/Google) de cada vaga ----
+   1) imagem da própria vaga (campo imagem / imagem_empresa): URL absoluta, caminho local ou data: (gravada em img/vagas/og-<slug>.<ext>)
+   2) sem imagem na vaga -> imagem geral do site */
+const OG_DEFAULT = { url: SITE + "/og-cv-builder-v2.jpg", type: "image/jpeg", w: 1600, h: 840 };
+function ogImage(v) {
+  const { imgSize } = require("./og-fetch.js"), MIN = 200;
+  const src = String(v.imagem || v.imagem_empresa || "").trim();
+  if (!src) return OG_DEFAULT;
+  const imgDir = path.join(root, "img", "vagas");
+  const pack = (buf, url, fallbackType) => { const z = imgSize(buf); if (z && z.w && z.h && Math.min(z.w, z.h) < MIN) return OG_DEFAULT; /* <200px: o Facebook ignora */ return z && z.w ? { url, type: z.type, w: z.w, h: z.h } : { url, type: fallbackType }; };
+  const m = /^data:image\/(png|jpe?g|webp|gif);base64,(.+)$/i.exec(src);
+  if (m) {
+    const buf = Buffer.from(m[2], "base64"), z = imgSize(buf), ext = z ? z.ext : m[1].toLowerCase().replace("jpeg", "jpg");
+    try {
+      fs.mkdirSync(imgDir, { recursive: true });
+      fs.readdirSync(imgDir).filter(x => x.startsWith("og-" + v.slug + ".")).forEach(x => fs.unlinkSync(path.join(imgDir, x)));
+      fs.writeFileSync(path.join(imgDir, "og-" + v.slug + "." + ext), buf);
+      return pack(buf, SITE + "/img/vagas/og-" + v.slug + "." + ext, "image/" + (ext === "jpg" ? "jpeg" : ext));
+    } catch (e) { return OG_DEFAULT; }
+  }
+  if (/^https?:\/\//i.test(src)) {
+    /* preferir a cópia local descarregada por og-fetch.js */
+    const loc = fs.existsSync(imgDir) ? fs.readdirSync(imgDir).find(x => x.startsWith("og-" + v.slug + ".")) : null;
+    if (loc) return pack(fs.readFileSync(path.join(imgDir, loc)), SITE + "/img/vagas/" + loc, "image/jpeg");
+    return { url: src, type: /\.png(\?|$)/i.test(src) ? "image/png" : /\.webp(\?|$)/i.test(src) ? "image/webp" : "image/jpeg" };
+  }
+  const rel = src[0] === "/" ? src : "/" + src, file = path.join(root, decodeURIComponent(rel));
+  if (fs.existsSync(file)) return pack(fs.readFileSync(file), SITE + rel, "image/jpeg");
+  return { url: SITE + rel, type: /\.png$/i.test(src) ? "image/png" : /\.webp$/i.test(src) ? "image/webp" : "image/jpeg" };
+}
+/* meta descrição própria de cada vaga: campo meta_descricao (Decap) ou gerada com resumo + local + prazo */
+function metaDesc(v) {
+  if (v.meta_descricao && String(v.meta_descricao).trim()) return String(v.meta_descricao).replace(/\s+/g, " ").trim().slice(0, 158);
+  const base = String(v.resumo || "").replace(/\s+/g, " ").trim() || exc(v, 100) || ("Vaga de emprego: " + v.titulo);
+  const tail = (v.local ? " Local: " + v.local + "." : "") + " Prazo: " + (fmt(v.prazo) || "ver anúncio") + ".";
+  let d = (/[.!?…]$/.test(base) ? base : base + ".") + tail;
+  if (d.length > 158) { const room = 158 - tail.length - 1; const b = base.slice(0, Math.max(room, 40)); d = b.slice(0, Math.max(b.lastIndexOf(" "), 30)).replace(/[ ,;:.]+$/, "") + "…" + tail; }
+  return d.slice(0, 200);
+}
 const ICON = "/icon-80.png";
 const pin = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.800 7 11 7 11z"/><circle cx="12" cy="10" r="2.500"/></svg>';
 const clk = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
@@ -62,14 +102,22 @@ fs.mkdirSync(path.join(root, "vaga"), { recursive: true });
 fs.readdirSync(path.join(root, "vaga")).filter(f => f.endsWith(".html")).forEach(f => fs.unlinkSync(path.join(root, "vaga", f)));
 activas.forEach(v => {
   const url = SITE + "/vaga/" + v.slug, title = v.titulo + (v.empresa ? " — " + v.empresa : "") + " | Vagas de Emprego";
-  const desc = (exc(v, 158) || ("Vaga de emprego: " + v.titulo + (v.local ? " em " + v.local : "") + ". Prazo: " + (fmt(v.prazo) || "ver anúncio") + ".")).slice(0, 158);
-  const ld = { "@context": "https://schema.org", "@type": "JobPosting", title: v.titulo, description: String(plain(v) || v.titulo), datePosted: String(v.publicado || today).slice(0, 10), validThrough: v.prazo ? String(v.prazo).slice(0, 10) : undefined, employmentType: EMP(v.contrato), hiringOrganization: { "@type": "Organization", name: v.empresa || "Ver anúncio" }, jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", streetAddress: v.endereco || undefined, addressLocality: v.local || "", addressCountry: "MZ" } }, url };
+  const desc = metaDesc(v), og = ogImage(v);
+  const ld = { "@context": "https://schema.org", "@type": "JobPosting", title: v.titulo, description: String(plain(v) || v.titulo), datePosted: String(v.publicado || today).slice(0, 10), validThrough: v.prazo ? String(v.prazo).slice(0, 10) : undefined, employmentType: EMP(v.contrato), hiringOrganization: { "@type": "Organization", name: v.empresa || "Ver anúncio" }, jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", streetAddress: v.endereco || undefined, addressLocality: v.local || "", addressCountry: "MZ" } }, url, image: og.url };
   let head = tpl.replace(/<title>[\s\S]*?<\/title>/, "<title>" + esc(title) + "</title>")
     .replace(/(<meta name="description" content=")[^"]*"/, "$1" + esc(desc) + '"')
     .replace(/(<link rel="canonical" href=")[^"]*"/, "$1" + url + '"')
     .replace(/(<meta property="og:title" content=")[^"]*"/, "$1" + esc(title) + '"').replace(/(<meta name="twitter:title" content=")[^"]*"/, "$1" + esc(title) + '"')
     .replace(/(<meta property="og:description" content=")[^"]*"/, "$1" + esc(desc) + '"').replace(/(<meta name="twitter:description" content=")[^"]*"/, "$1" + esc(desc) + '"')
     .replace(/(<meta property="og:url" content=")[^"]*"/, "$1" + url + '"')
+    .replace(/<meta property="og:type" content="[^"]*">/, '<meta property="og:type" content="article">')
+    .replace(/<meta property="og:image" content="[^"]*">/, '<meta property="og:image" content="' + esc(og.url) + '">\n<meta property="og:image:secure_url" content="' + esc(og.url) + '">')
+    .replace(/<meta property="og:image:type" content="[^"]*">/, '<meta property="og:image:type" content="' + og.type + '">')
+    .replace(/<meta property="og:image:width" content="[^"]*">\s*/, og.w ? '<meta property="og:image:width" content="' + og.w + '">\n' : "")
+    .replace(/<meta property="og:image:height" content="[^"]*">\s*/, og.h ? '<meta property="og:image:height" content="' + og.h + '">\n' : "")
+    .replace(/(<meta property="og:image:alt" content=")[^"]*"/, "$1" + esc(title) + '"')
+    .replace(/(<meta name="twitter:image" content=")[^"]*"/, "$1" + esc(og.url) + '"')
+    .replace(/(<meta name="twitter:image:alt" content=")[^"]*"/, "$1" + esc(title) + '"')
     .replace("</head>", (v.palavras_chave ? '<meta name="keywords" content="' + esc(v.palavras_chave) + '">\n' : "") + '<script type="application/ld+json">' + JSON.stringify(ld).replace(/</g, "\\u003c") + "</script>\n</head>")
     .replace(' aria-current=page', "");
   let dsc = String(v.descricao || v.resumo || ""), fnt = v.fonte || ""; const fm = dsc.match(/^[ \t]*Fonte[ \t]*:[ \t]*(\S+)[ \t]*$/im); if (fm) { if (!fnt) fnt = fm[1]; dsc = dsc.replace(fm[0], "").trim(); }

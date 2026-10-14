@@ -158,6 +158,6 @@
   }
  ],
  "cleanUrls": true,
- "buildCommand": "node build.js",
+ "buildCommand": "node og-fetch.js && node build.js",
  "outputDirectory": "."
 }

@@ -235,8 +235,8 @@ body{zoom:var(--z)}
 .cv-page.fit .sec-h,.cv-page.fit .en-t{font-size:calc(12pt * var(--f,1))}
 @media print{.cv-page .pg{margin:0;box-shadow:none;break-after:page;page-break-after:always;height:296.5mm}.cv-page .pg:last-child{break-after:auto;page-break-after:auto}}
 </style>
-<link rel="stylesheet" href="/extras.css?v=35">
-<script src="/extras.js?v=35" defer></script>
+<link rel="stylesheet" href="/extras.css?v=36">
+<script src="/extras.js?v=36" defer></script>
 </head>
 <body>
 
@@ -1399,7 +1399,7 @@ function pvCard(){
 function renderPreviewView(){
   return `
   ${pvCard()}${versionPicker(true)}<div class="preview-toolbar">
-    <span class="page-badge" id="pageBadge">1 / 2 páginas</span>
+    <span class="page-badge" id="pageBadge">1 página</span>
     <button class="btn btn-sm" id="btnRefresh">Actualizar</button>
   </div>
   <div class="cv-scale-wrap" id="cvScaleWrap"><div class="cv-page" id="cvPage"></div></div>
@@ -1825,18 +1825,13 @@ function fitToPages(){
   const paged = page._src && !/is-letter/.test(page.className) && /t-(foto|sem)/.test(page.className);
   const count = paged ? (()=>cvLayout(page,true)) : ()=>{ page.classList.add("mp"); const h = page.scrollHeight; page.classList.remove("mp"); return Math.max(1, Math.ceil((h * MM_PER_PX - _x) / PAGE_CONTENT_MM)); };
   let pages = count();
-  /* Máximo 2 páginas A4: se passar, reduz tipo/espaços por degraus até caber */
-  const STEPS = [0.94,0.89,0.85,0.81,0.78];
-  for(let i=0; pages>2 && i<STEPS.length; i++){
-    page.classList.add("fit");
-    page.style.setProperty("--f", STEPS[i]);
-    pages = count();
-  }
+  /* Sem limite de páginas: o CV cresce para 2, 3, 4… páginas A4 conforme o conteúdo */
   if(paged && !window._cvPrinting) cvLayout(page,false);
+  if(paged){ const _n=page.querySelectorAll(".pg").length; if(_n) pages=_n; }
   const badge = document.getElementById("pageBadge");
   if(badge){
-    badge.textContent = `${pages} / 2 páginas`;
-    badge.className = "page-badge" + (pages>2 ? " danger" : (pages===2 ? " warn" : ""));
+    badge.textContent = pages===1 ? "1 página" : `${pages} páginas`;
+    badge.className = "page-badge";
   }
 
   const fullHeightPx = page.scrollHeight;
@@ -1938,7 +1933,7 @@ function renderAboutView(){
   ${pgItem(ICONS.personal,"Dois modelos de CV","CV·A Executivo (com fotografia e barra lateral) e CV·B Tradicional (clássico, em coluna única).")}
   ${pgItem(ICONS.coverLetter,"Carta de Apresentação","Carta com o mesmo estilo visual do currículo e contactos no rodapé.")}
   ${pgItem(ICONS.skills,"Cores vivas e Relevo 3D","Azul, vermelho, verde, roxo, ciano, preto, combinações em preto · vermelho · branco e o tema Relevo 3D.")}
-  ${pgItem(ICONS.profile,"A4 vertical, até 2 páginas","O conteúdo ajusta-se automaticamente para o currículo nunca passar de duas páginas.")}
+  ${pgItem(ICONS.profile,"A4 vertical, sem limite de páginas","O currículo cresce automaticamente para 2, 3 ou mais páginas A4, conforme a sua experiência.")}
   ${pgItem(ICONS.certifications,"Guardar em PDF","Imprima ou guarde apenas o documento — sem menus, sem opções de cor.")}
 
   <div class="pg-h">Apoie o Projecto</div>

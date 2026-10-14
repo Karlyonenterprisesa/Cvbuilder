@@ -339,3 +339,19 @@ body.is-app .pg-ico.pg-brand{background:#fff !important;background-image:none !i
 .lp-item{aspect-ratio:1;border:1.5px solid #dfe6f0;border-radius:10px;background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .lp-item:active,.lp-item:hover{border-color:#1c5ff0}
 .lp-item img{max-width:100%;max-height:100%;object-fit:contain}
+
+
+/* ===== v36: espaçamento 1,25, Dados Pessoais alinhado à esquerda, foto menor ===== */
+.cv-page,.cv-page *{line-height:1.25 !important}
+.cv-page .en-d,.cv-page .en-d p{line-height:1.25 !important}
+/* título "Dados Pessoais" alinhado/justificado à esquerda (já não centrado) e itens a começar à esquerda */
+.cv-page .sec-dp .sec-h{display:block;text-align:justify !important;text-align-last:left !important}
+.cv-page .sec-dp .dp{justify-content:flex-start !important;text-align:left !important}
+.cv-page .sec-dp .dp .ct{justify-content:flex-start !important;text-align:left !important}
+/* foto de perfil mais pequena (CV com foto) */
+.cv-page .s-head.has-ph{min-height:32mm;padding:4mm 46mm 0}
+.cv-page .hp-photo{width:27mm;height:27mm;left:20mm;top:4mm;border-radius:4mm}
+.cv-page .lf-band .d-photo{width:30mm;height:30mm;border-radius:4mm}
+.cv-page .lf-band{padding:4mm 14mm;gap:6mm}
+/* nome + profissão sempre em blocos próprios (div) por baixo da foto/ao lado */
+.cv-page .s-head .d-name,.cv-page .s-head .d-role{display:block}
