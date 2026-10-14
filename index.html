@@ -235,7 +235,7 @@ body{zoom:var(--z)}
 .cv-page.fit .sec-h,.cv-page.fit .en-t{font-size:calc(12pt * var(--f,1))}
 @media print{.cv-page .pg{margin:0;box-shadow:none;break-after:page;page-break-after:always;height:296.5mm}.cv-page .pg:last-child{break-after:auto;page-break-after:auto}}
 </style>
-<link rel="stylesheet" href="/extras.css?v=40">
+<link rel="stylesheet" href="/extras.css?v=42">
 <script src="/extras.js?v=39" defer></script>
 </head>
 <body>
@@ -1206,7 +1206,7 @@ function renderPortfolioEditor(){
     <div class="field"><label>Link (https://...) — fica escondido atrás do botão</label><input type="text" id="ff_portfolio_contacto" placeholder="https://..." value="${esc(editing?editing.contacto:'')}"></div>
     <div class="field"><label>Texto do botão clicável</label><input type="text" id="ff_portfolio_btn" maxlength="30" placeholder="Ver portfólio" value="${esc(editing&&editing.btn?editing.btn:'')}"></div>
     <div class="field"><label>Link escrito para impressão (opcional) — só aparece no CV se preencher</label><input type="text" id="ff_portfolio_printurl" placeholder="Ex: www.meusite.com" value="${esc(editing?(editing.printUrl!==undefined?editing.printUrl:(editing.showUrl?editing.contacto:'')):'')}"></div>
-    <div class="field"><label>Descrição curta (opcional)</label><input type="text" id="ff_portfolio_desc" maxlength="140" placeholder="Ex: Site de enfermagem com artigos e cursos" value="${esc(editing&&editing.desc?editing.desc:'')}"></div>
+    <div class="field"><label>Descrição curta (opcional, até 40 letras) — aparece no mini cartão à esquerda</label><input type="text" id="ff_portfolio_desc" maxlength="40" placeholder="Ex: Site de enfermagem com artigos e cursos" value="${esc(editing&&editing.desc?editing.desc:'')}"></div>
     <div class="field"><label>Categoria (ex: Website, Artigo, Projecto)</label><input type="text" id="ff_portfolio_cargo" value="${esc(editing?editing.cargo:'')}"></div>
     <div class="field"><label>Imagem ou ícone (opcional)</label>
       <div style="display:flex;align-items:center;gap:10px">
@@ -1774,7 +1774,8 @@ function buildDoc(letter){
     const lbl=(p.btn||"").trim()||"Ver portfólio";
     const btn=u?`<a class="pf-btn" href="${esc(u)}" target="_blank" rel="noopener">${esc(tx(lbl))} ↗</a>`:"";
     const pu=(p.printUrl!==undefined?p.printUrl:(p.showUrl?p.contacto:"")||"").trim(); const shown=pu?`<div class="pf-url">${esc(pu)}</div>`:"";
-    return `<div class="pf-row${im?' has-img':''}">${im}<div class="pf-main">${t?`<div class="pf-t">${esc(t)}</div>`:""}${p.desc&&p.desc.trim()?`<div class="pf-d">${esc(p.desc.trim())}</div>`:""}${btn?`<div class="pf-act">${btn}</div>`:""}${shown}</div></div>`; };
+    const dsc=(p.desc||"").trim();
+    return `<div class="pf-row${dsc?'':' no-desc'}">${dsc?`<div class="pf-card">${esc(dsc)}</div>`:""}<div class="pf-right">${im}<div class="pf-main">${t?`<div class="pf-t">${esc(t)}</div>`:""}${btn?`<div class="pf-act">${btn}</div>`:""}${shown}</div></div></div>`; };
   const pf=Object.keys(pfg).map(k=>`<div class="en"><div class="en-t">${esc(tx(k))}</div><div class="en-d">${pfg[k].map(pfRow).join("")}</div></div>`).join("");
   const main=()=>{
     let h=sec("Perfil Profissional",state.profile?`<p>${esc(tx(state.profile))}</p>`:"");

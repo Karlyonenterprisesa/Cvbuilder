@@ -389,3 +389,21 @@ body.is-app .pg-ico.pg-brand{background:#fff !important;background-image:none !i
 
 /* ===== v40: espaçamento 1,15 em Habilidades e Idiomas ===== */
 .cv-page .mk-list .f-row,.cv-page .mk-list .f-row *,.cv-page .f-row.f-sk,.cv-page .f-row.f-sk *,.cv-page .f-row.f-lg,.cv-page .f-row.f-lg *{line-height:1.15 !important}
+
+
+/* ===== v41: portfólio — cartão da descrição à esquerda, título + botão à direita; imagens sem corte ===== */
+.cv-page .pf-row{display:flex;align-items:center;justify-content:space-between;gap:4mm;margin:0 0 2.2mm}
+.cv-page .pf-card{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;box-sizing:border-box;border-left:1.2mm solid var(--a);background:rgba(0,0,0,.04);border-radius:0 1.5mm 1.5mm 0;padding:1.5mm 3mm;text-align:left;font-size:11pt;color:#333;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cv-page.fit .pf-card{font-size:calc(11pt * var(--f,1))}
+.cv-page .pf-right{flex:0 1 auto;display:flex;align-items:center;gap:3mm;max-width:52%;margin-left:auto;text-align:right}
+.cv-page .pf-row.no-desc .pf-right{max-width:100%}
+.cv-page .pf-right .pf-main{flex:0 1 auto;text-align:right}
+.cv-page .pf-right .pf-t,.cv-page .pf-right .pf-url{text-align:right}
+.cv-page .pf-img{width:14mm;height:14mm;flex:0 0 14mm;object-fit:contain !important;object-position:center;background:#fff}
+/* nenhuma imagem é cortada: logótipos, miniaturas e pré-visualizações ajustam-se por inteiro */
+.cv-page .en-logo{object-fit:contain !important;object-position:center !important;padding:1.4mm !important;box-sizing:border-box !important}
+.logo-preview,.entry-card .thumb{background-size:contain !important;background-repeat:no-repeat !important;background-position:center !important}
+
+
+/* ===== v42: mini cartão horizontal (uma linha) à esquerda ===== */
+.cv-page .pf-card{flex:0 1 auto;align-self:center;display:inline-flex;align-items:center;width:auto;max-width:46%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;line-height:1.25 !important;padding:1.2mm 3.5mm;border:.3mm solid var(--a);border-left-width:1.2mm;border-radius:1.5mm;background:#fff}
