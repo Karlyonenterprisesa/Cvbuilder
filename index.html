@@ -235,7 +235,7 @@ body{zoom:var(--z)}
 .cv-page.fit .sec-h,.cv-page.fit .en-t{font-size:calc(12pt * var(--f,1))}
 @media print{.cv-page .pg{margin:0;box-shadow:none;break-after:page;page-break-after:always;height:296.5mm}.cv-page .pg:last-child{break-after:auto;page-break-after:auto}}
 </style>
-<link rel="stylesheet" href="/extras.css?v=42">
+<link rel="stylesheet" href="/extras.css?v=43">
 <script src="/extras.js?v=39" defer></script>
 </head>
 <body>
@@ -1206,7 +1206,7 @@ function renderPortfolioEditor(){
     <div class="field"><label>Link (https://...) — fica escondido atrás do botão</label><input type="text" id="ff_portfolio_contacto" placeholder="https://..." value="${esc(editing?editing.contacto:'')}"></div>
     <div class="field"><label>Texto do botão clicável</label><input type="text" id="ff_portfolio_btn" maxlength="30" placeholder="Ver portfólio" value="${esc(editing&&editing.btn?editing.btn:'')}"></div>
     <div class="field"><label>Link escrito para impressão (opcional) — só aparece no CV se preencher</label><input type="text" id="ff_portfolio_printurl" placeholder="Ex: www.meusite.com" value="${esc(editing?(editing.printUrl!==undefined?editing.printUrl:(editing.showUrl?editing.contacto:'')):'')}"></div>
-    <div class="field"><label>Descrição curta (opcional, até 40 letras) — aparece no mini cartão à esquerda</label><input type="text" id="ff_portfolio_desc" maxlength="40" placeholder="Ex: Site de enfermagem com artigos e cursos" value="${esc(editing&&editing.desc?editing.desc:'')}"></div>
+    <div class="field"><label>Descrição (opcional, até 200 palavras) — aparece no cartão ao lado do título</label><textarea id="ff_portfolio_desc" rows="4" placeholder="Ex: Site de enfermagem com artigos e cursos">${esc(editing&&editing.desc?editing.desc:'')}</textarea><div id="pf_wc" style="font-size:12px;color:var(--muted);margin-top:4px">0 / 200 palavras</div></div>
     <div class="field"><label>Categoria (ex: Website, Artigo, Projecto)</label><input type="text" id="ff_portfolio_cargo" value="${esc(editing?editing.cargo:'')}"></div>
     <div class="field"><label>Imagem ou ícone (opcional)</label>
       <div style="display:flex;align-items:center;gap:10px">
@@ -1380,6 +1380,8 @@ function pfUrl(u){ u=(u||"").trim(); if(!u) return ""; if(/^(mailto:|tel:)/i.tes
 let _pfImg=null;
 function bindPortfolio(){
   { const _ed=openForm&&openForm.section==="portfolio"?state.portfolio.find(i=>i.id===openForm.id):null; _pfImg=_ed?(_ed.img||""):""; }
+  { const _d=document.getElementById("ff_portfolio_desc"), _wc=document.getElementById("pf_wc");
+    if(_d&&_wc){ const upd=()=>{ let w=_d.value.trim().split(/\s+/).filter(Boolean); if(w.length>200){ _d.value=w.slice(0,200).join(" "); w=w.slice(0,200); } _wc.textContent=w.length+" / 200 palavras"; }; _d.addEventListener("input",upd); upd(); } }
   const _fi=document.getElementById("ff_portfolio_img"), _pv=document.getElementById("pfImgPrev"), _rm=document.getElementById("pfImgRem");
   if(_fi) _fi.addEventListener("change",()=>{ const f=_fi.files&&_fi.files[0]; if(!f) return; pfResize(f,b=>{ _pfImg=b; _pv.style.backgroundImage=`url('${b}')`; _pv.textContent=""; _pv.classList.remove("empty"); _rm.style.display=""; }); });
   if(_rm) _rm.addEventListener("click",()=>{ _pfImg=""; _pv.style.backgroundImage=""; _pv.textContent="Img"; _pv.classList.add("empty"); _rm.style.display="none"; });
