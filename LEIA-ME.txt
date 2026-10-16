@@ -1,0 +1,4 @@
+ONDE COLOCAR (tudo relativo a RAIZ do projeto)
+  index.html, extras.js, extras.css, sw.js, privacidade.html  -> raiz
+  api/traduzir.js -> pasta api/ (ao lado de auth.js e callback.js)
+Depois de publicar na Vercel, feche e reabra o site.

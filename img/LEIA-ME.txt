@@ -1,0 +1,13 @@
+FOTOGRAFIAS DOS ARTIGOS
+Coloque aqui as fotografias, em JPG, 1200x675 px (16:9), com estes nomes exactos.
+Enquanto um ficheiro nao existir, a figura correspondente nao aparece (nao fica nenhum espaco vazio).
+
+carta-de-apresentacao-1.jpg  - pessoa a escrever uma carta/candidatura
+carta-de-apresentacao-2.jpg  - candidato a rever documentos
+erros-no-curriculo-1.jpg     - recrutador a analisar curriculos
+erros-no-curriculo-2.jpg     - pessoa a rever o curriculo no telemovel
+preparar-entrevista-1.jpg    - entrevista de emprego
+preparar-entrevista-2.jpg    - pessoa a treinar respostas
+
+Use fotografias suas ou de bancos gratuitos para uso comercial (Unsplash, Pexels, Pixabay), cumprindo a licenca.
+Se possivel use fotos de pessoas reais em Mocambique. Comprima cada imagem para menos de 200 KB (squoosh.app).
