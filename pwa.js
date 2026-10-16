@@ -1,4 +1,4 @@
-/* Adivision CV Builder — PWA: registo do service worker e botão flutuante «Instalar app».
+/* Adivision Tech — PWA: registo do service worker e botão flutuante «Instalar app».
    Regras: 1.ª vez após 3 min no site; fica visível 10 s; volta a cada 10 min. Nunca aparece se a app já estiver instalada. */
 (function () {
   "use strict";
@@ -35,7 +35,7 @@
     var txt = isIOS
       ? "Toque no botão <b>Partilhar</b> (quadrado com seta) e escolha <b>Adicionar ao ecrã principal</b>."
       : "Abra o menu do navegador (⋮) e escolha <b>Instalar aplicação</b> ou <b>Adicionar ao ecrã principal</b>.";
-    d.innerHTML = '<div style="background:#fff;color:#0b1a33;max-width:420px;width:100%;border-radius:16px;padding:18px 18px 14px;box-shadow:0 10px 40px rgba(0,0,0,.4)"><p style="margin:0 0 8px;font-weight:800;font-size:17px">Instalar o CV Builder</p><p style="margin:0 0 14px;text-align:left">' + txt + '</p><button type="button" id="pwaHelpOk" style="min-height:44px;width:100%;border:0;border-radius:999px;background:#1c5ff0;color:#fff;font-weight:800;font-size:15px">Entendi</button></div>';
+    d.innerHTML = '<div style="background:#fff;color:#0b1a33;max-width:420px;width:100%;border-radius:16px;padding:18px 18px 14px;box-shadow:0 10px 40px rgba(0,0,0,.4)"><p style="margin:0 0 8px;font-weight:800;font-size:17px">Instalar o Adivision Tech</p><p style="margin:0 0 14px;text-align:left">' + txt + '</p><button type="button" id="pwaHelpOk" style="min-height:44px;width:100%;border:0;border-radius:999px;background:#1c5ff0;color:#fff;font-weight:800;font-size:15px">Entendi</button></div>';
     document.body.appendChild(d);
     d.onclick = function (e) { if (e.target === d || e.target.id === "pwaHelpOk") d.remove(); };
   }

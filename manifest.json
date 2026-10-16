@@ -1,8 +1,8 @@
 {
  "id": "./",
- "name": "Adivision CV Builder",
- "short_name": "CV Builder",
- "description": "Crie o seu currículo e carta de apresentação, com funcionamento offline.",
+ "name": "Adivision Tech",
+ "short_name": "Adivision Tech",
+ "description": "Criador de CV & Carta de Apresentação e Vagas de Emprego",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",

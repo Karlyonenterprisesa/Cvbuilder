@@ -1,4 +1,4 @@
-/* Adivision CV Builder — pesquisa, filtros e ordenação na página de vagas (PT/EN) */
+/* Adivision Tech — pesquisa, filtros e ordenação na página de vagas (PT/EN) */
 (function () {
   "use strict";
   var cards = [].slice.call(document.querySelectorAll(".vg-card"));

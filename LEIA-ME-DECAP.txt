@@ -1,4 +1,4 @@
-ADIVISION CV BUILDER — DECAP CMS (admin) — checklist
+ADIVISION TECH — DECAP CMS (admin) — checklist
 1) GitHub > Settings > Developer settings > OAuth Apps > New OAuth App
    Homepage URL ........: https://SEU-DOMINIO.vercel.app
    Authorization callback: https://SEU-DOMINIO.vercel.app/api/callback   (tem de ser /api/callback, igual ao domínio real)

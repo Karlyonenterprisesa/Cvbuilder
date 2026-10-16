@@ -1,4 +1,4 @@
-/* Adivision CV Builder — consentimento de cookies, Google Consent Mode v2, Analytics e AdSense.
+/* Adivision Tech — consentimento de cookies, Google Consent Mode v2, Analytics e AdSense.
    - GA_ID: preencha com o ID do Google Analytics 4 (ex.: "G-XXXXXXXXXX").
    - AD_SLOT: opcional. ID de um bloco de anúncios criado no AdSense (só números).
      Se ficar vazio, o AdSense usa os "Anúncios automáticos" (se activados na sua conta).

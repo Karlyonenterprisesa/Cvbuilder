@@ -1,4 +1,4 @@
-# Adivision CV Builder — Decap CMS com login GitHub (OAuth via /api/auth e /api/callback na Vercel)
+# Adivision Tech — Decap CMS com login GitHub (OAuth via /api/auth e /api/callback na Vercel)
 # Repositório: Karlyonenterprisesa/Cvbuilder  ·  Site: https://adivisioncvbuilder.vercel.app
 # Necessita na Vercel: GITHUB_CLIENT_ID e GITHUB_CLIENT_SECRET (ver /api/diagnostico)
 # Cópia do login DecapBridge: admin/config.decapbridge.backup.yml
